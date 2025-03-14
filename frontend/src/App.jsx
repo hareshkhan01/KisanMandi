@@ -4,10 +4,10 @@ import viteLogo from '/vite.svg'
 import Navbar from './Components/Navbar'
 import Home from './Pages/Home.jsx'
 import Footer from './Components/Footer.jsx'
-// import './App.css'
+import './App.css'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -15,7 +15,7 @@ function App() {
       <Home></Home>
       <Footer></Footer>
     </>
-  )
+  );
 }
 
 export default App

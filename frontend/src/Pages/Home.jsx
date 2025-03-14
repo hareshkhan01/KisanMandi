@@ -9,6 +9,7 @@ import Testimonials from '../Components/Testimonials.jsx'
 import OurTeam from '../Components/OurTeam.jsx'
 import Blogs from '../Components/Blogs.jsx'
 
+
 const Home = () => {
   return (
     <>

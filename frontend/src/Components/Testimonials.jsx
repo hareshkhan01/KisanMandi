@@ -10,7 +10,7 @@ const Testimonials = () => {
               <div className="owl-carousel testimonial-carousel p-5">
                 <div className="testimonial-item text-center text-white">
                   <img
-                    className="img-fluid mx-auto p-2 border border-5 border-secondary rounded-circle mb-4"
+                    className="img-fluid mx-auto p-2 border-5 border-secondary rounded-circle mb-4"
                     src="img/testimonial-2.jpg"
                     alt
                   />
@@ -24,7 +24,7 @@ const Testimonials = () => {
                 </div>
                 <div className="testimonial-item text-center text-white">
                   <img
-                    className="img-fluid mx-auto p-2 border border-5 border-secondary rounded-circle mb-4"
+                    className="img-fluid mx-auto p-2 border-5 border-secondary rounded-circle mb-4"
                     src="img/testimonial-2.jpg"
                     alt
                   />
