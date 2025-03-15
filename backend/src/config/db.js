@@ -12,8 +12,8 @@ const connectDB = async () => {
         })
 
         await mongoose.connect(config.mongoString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true
         })
 
     } catch (error) {
