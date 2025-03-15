@@ -23,6 +23,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
     e.preventDefault();
     // Implement your login logic here, e.g., authentication call
     localStorage.setItem("user", username);
+    window.location.reload();
     console.log("Logging in with", { username, password });
     // Close the modal after login
     onOpenChange(false);
