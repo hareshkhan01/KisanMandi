@@ -22,4 +22,4 @@ async function getAuctions(req, res, next) {
 
 
 
-
+export{createAuction, getAuctions}

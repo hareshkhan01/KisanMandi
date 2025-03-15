@@ -28,7 +28,7 @@ export const setupAuctionHandlers = (io) => {
 
         // 4. Update in MongoDB
         
-        const  updateBid = async (req, res, next) => {
+        const  updateBid = async (auctionId) => {
             try {
                 //const { bidAmount, userId } = req.body;
         
