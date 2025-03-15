@@ -27,20 +27,48 @@ export const setupAuctionHandlers = (io) => {
         }
 
         // 4. Update in MongoDB
-        const updatedAuction = await auctionModel.findByIdAndUpdate(
-          auctionId,
-          { 
-            currentBid: bidAmount,
-            highestBidder: userId 
-          },
-          { new: true } // Return updated document
-        );
+        
+        const  updateBid = async (req, res, next) => {
+            try {
+                //const { bidAmount, userId } = req.body;
+        
+                // Fetch the auction
+                const auction = await auctionModel.findById(auctionId);
+                if (!auction) {
+                    return res.status(404).json({ message: "Auction not found" });
+                }
+        
+                // Push the new bid into highestBidders array
+                auction.highestBidder.push({
+                    user: userId,
+                    amount: bidAmount,
+                    bidTime: new Date()
+                });
+        
+                // Sort bids in descending order & keep only the top 3
+                auction.highestBidder.sort((a, b) => b.amount - a.amount);
+                if (auction.highestBidder.length > 3) {
+                    auction.highestBidder = auction.highestBidders.slice(0, 3);
+                }
+        
+                // Update currentBid (highest bid)
+                auction.currentBid = auction.highestBidder[0].amount;
+        
+                // Save the updated auction
+                await auction.save();
+        
+                res.json(auction);
+            } catch (error) {
+                next(error);
+            }
+        }
+        
 
         // 5. Broadcast to all room participants
         io.to(auctionId).emit('bidUpdate', {
           auctionId,
-          newBid: updatedAuction.currentBid,
-          highestBidder: updatedAuction.highestBidder
+          newBid: updateBid.currentBid,
+          highestBidder: updateBid.highestBidder
         });
 
       } catch (error) {
