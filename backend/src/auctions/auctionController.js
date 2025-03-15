@@ -20,6 +20,23 @@ async function getAuctions(req, res, next) {
     }
 }
 
+async function updateAuction(req, res, next) {
+    try {
+        const updatedAuction = await Auction.findByIdAndUpdate(
+            req.params.id,        
+            req.body,             
+            { new: true }         
+        );
+
+        if (!updatedAuction) {
+            return res.status(404).json({ message: "Auction not found" });
+        }
+
+        res.status(200).json(updatedAuction);
+    } catch (error) {
+        next(error);
+    }
+}
 
 
-
+export { createAuction,getAuctions, updateAuction }
