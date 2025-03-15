@@ -1,3 +1,4 @@
+
 import Auction from "../models/auction.js";
 async function createAuction(req, res, next) {
     const auction = new Auction({...req.body});
@@ -55,4 +56,4 @@ async function updateAuction(req, res, next) {
 }
 
 
-export { createAuction,getAuctions, updateAuction }
+
