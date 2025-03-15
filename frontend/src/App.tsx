@@ -4,13 +4,15 @@ import Navbar from "./app/Navbar";
 import Home from "./Pages/Home";
 import Footer from "./app/Footer.js";
 import { ThemeProvider } from "./components/theme-provider"
+import Bidding from "./Pages/Bidding.js";
 
 export default function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
     <BrowserRouter>
       <Navbar/>
-      <Home/>
+      {/* <Home/> */}
+      <Bidding/>
       <Footer/>
     </BrowserRouter>
     </ThemeProvider>
