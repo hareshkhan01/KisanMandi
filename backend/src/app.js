@@ -1,6 +1,7 @@
 import express from "express";
 import {config} from "./config/config.js"
 import cors from "cors"
+import userRouter from "./users/userRouter.js";
 
 
 const app = express();
@@ -17,6 +18,9 @@ app.use(express.urlencoded({extended: true}))
 app.get("/", (req, res) => {
     res.json({message: "hello"});
 });
+
+
+app.use("/api/users", userRouter)
 
 
 
