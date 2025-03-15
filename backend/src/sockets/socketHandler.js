@@ -1,6 +1,7 @@
 // serever side socket logic
 
-import auctionModel from '../models/auction.js';
+import Auction from '../models/auction.js';
+
 
 export const setupAuctionHandlers = (io) => {
   io.on('connection', (socket) => {
