@@ -2,7 +2,7 @@ import express from "express";
 import {config} from "./config/config.js"
 import cors from "cors"
 import userRouter from "./users/userRouter.js";
-
+import auctionRouter from "./auctions/auctionRouter.js";
 
 const app = express();
 
