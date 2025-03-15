@@ -5,25 +5,23 @@ const auctionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    price: {
-        type: Number,
-        required: true,
+    currentBid: { 
+        type: Number, 
+        default: 0 
     },
-    date: {
-        type: Date,
-        required: true,
+     status: { 
+        type: String, 
+        enum: ['open', 'closed'],
+        default: 'open' 
     },
-    farmer: {
+
+    endTime: Date,
+
+  highestBidder: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    vendor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
+        ref: 'User'
+     }
 });
 
-const Auction = mongoose.model("Auction", auctionSchema);
-export default Auction;
+const auctionModel = mongoose.model("Auction", auctionSchema);
+export default auctionModel;
