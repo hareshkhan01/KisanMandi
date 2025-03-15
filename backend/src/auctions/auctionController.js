@@ -21,34 +21,17 @@ async function getAuctions(req, res, next) {
 
 async function updateAuction(req, res, next) {
     try {
-        const { bidAmount, userId } = req.body;
+        const updatedAuction = await Auction.findByIdAndUpdate(
+            req.params.id,        
+            req.body,             
+            { new: true }         
+        );
 
-        // Fetch the auction
-        const auction = await Auction.findById(req.params.id);
-        if (!auction) {
+        if (!updatedAuction) {
             return res.status(404).json({ message: "Auction not found" });
         }
 
-        // Push the new bid into highestBidders array
-        auction.highestBidder.push({
-            user: userId,
-            amount: bidAmount,
-            bidTime: new Date()
-        });
-
-        // Sort bids in descending order & keep only the top 3
-        auction.highestBidder.sort((a, b) => b.amount - a.amount);
-        if (auction.highestBidder.length > 3) {
-            auction.highestBidder = auction.highestBidders.slice(0, 3);
-        }
-
-        // Update currentBid (highest bid)
-        auction.currentBid = auction.highestBidder[0].amount;
-
-        // Save the updated auction
-        await auction.save();
-
-        res.json(auction);
+        res.status(200).json(updatedAuction);
     } catch (error) {
         next(error);
     }
