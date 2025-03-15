@@ -27,7 +27,7 @@ export const setupAuctionHandlers = (io) => {
         }
 
         // 4. Update in MongoDB
-        const updatedAuction = await Auction.findByIdAndUpdate(
+        const updatedAuction = await auctionModel.findByIdAndUpdate(
           auctionId,
           { 
             currentBid: bidAmount,
