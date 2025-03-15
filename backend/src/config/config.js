@@ -1,5 +1,5 @@
 import { config as conf } from "dotenv";
-conf({ path: "../.env" });
+conf();
 
 const _config = {
   mongoString: process.env.MONGO_STRING,
