@@ -8,11 +8,9 @@ import Testimonials from '@/app/Testimonials'
 import OurTeam from '@/app/OurTeam'
 import Blogs from "@/app/Blogs"
 
-import { getAuctions } from '@/http/api'
 
 
 export default function Home() {
-  getAuctions()
   return (
     <>
     <Banner/>
