@@ -29,47 +29,60 @@ export const setupAuctionHandlers = (io) => {
 
         // 4. Update in MongoDB
         
-        const  updateBid = async (req, res, next) => {
-            try {
-                //const { bidAmount, userId } = req.body;
-        
-                // Fetch the auction
-                const auction = await auctionModel.findById(auctionId);
-                if (!auction) {
-                    return res.status(404).json({ message: "Auction not found" });
-                }
-        
-                // Push the new bid into highestBidders array
-                auction.highestBidder.push({
-                    user: userId,
-                    amount: bidAmount,
-                    bidTime: new Date()
-                });
-        
-                // Sort bids in descending order & keep only the top 3
-                auction.highestBidder.sort((a, b) => b.amount - a.amount);
-                if (auction.highestBidder.length > 3) {
-                    auction.highestBidder = auction.highestBidders.slice(0, 3);
-                }
-        
-                // Update currentBid (highest bid)
-                auction.currentBid = auction.highestBidder[0].amount;
-        
-                // Save the updated auction
-                await auction.save();
-        
-                res.json(auction);
-            } catch (error) {
-                next(error);
-            }
-        }
+        const updateBid = async (auctionId, bidAmount, userId) => {
+          try {
+              // Fetch the auction
+              const auction = await Auction.findById(auctionId);
+              if (!auction) {
+                  throw new Error("Auction not found");
+              }
+      
+              // Find existing bid by the same user
+              const existingBid = auction.highestBidder.find(bid => bid.user.toString() === userId);
+      
+              if (existingBid) {
+                  // Update bid amount only if the new bid is higher
+                  if (bidAmount > existingBid.amount) {
+                      existingBid.amount = bidAmount;
+                      existingBid.bidTime = new Date();
+                  } else {
+                      throw new Error("New bid must be higher than your previous bid");
+                  }
+              } else {
+                  // Push a new bid if the user hasn't bid before
+                  auction.highestBidder.push({
+                      user: userId,
+                      amount: bidAmount,
+                      bidTime: new Date()
+                  });
+              }
+      
+              // Sort bids in descending order & keep only the top 3
+              auction.highestBidder.sort((a, b) => b.amount - a.amount);
+              if (auction.highestBidder.length > 3) {
+                  auction.highestBidder = auction.highestBidder.slice(0, 3);
+              }
+      
+              // Update currentBid (highest bid)
+              auction.currentBid = auction.highestBidder[0]?.amount || 0;
+      
+              // Save the updated auction
+              await auction.save();
+      
+              return auction; // Return the updated auction object
+          } catch (error) {
+              throw error;
+          }
+      };
+
+        const updatedAuction = await updateBid(auctionId, bidAmount, userId);      
         
 
         // 5. Broadcast to all room participants
         io.to(auctionId).emit('bidUpdate', {
           auctionId,
-          newBid: updateBid.currentBid,
-          highestBidder: updateBid.highestBidder
+          newBid: updatedAuction.currentBid,
+          highestBidder: updatedAuction.highestBidder
         });
 
       } catch (error) {
