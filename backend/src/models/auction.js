@@ -1,7 +1,17 @@
 import mongoose from "mongoose";
 
 const auctionSchema = new mongoose.Schema({
-  crop: {
+  product: {
+    type: String,
+    required: true,
+  },
+
+  category: {
+    type: String,
+    required: true,
+  },
+
+  description: {
     type: String,
     required: true,
   },
@@ -11,12 +21,22 @@ const auctionSchema = new mongoose.Schema({
     required: true,
   },
 
+  availibility: {
+    type: Boolean,
+    default: false,
+  },
+
   farmer: {
 
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
 
+  },
+
+  pickupLocation: {
+    type: String,
+    required: true,
   },
 
   currentBid: {
