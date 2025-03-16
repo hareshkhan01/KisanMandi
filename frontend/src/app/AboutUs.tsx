@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@radix-ui/react-label";
 import { RocketIcon, ScaleIcon, ShieldCheckIcon, SproutIcon } from "lucide-react";
 
 export default function AboutUs() {
@@ -11,7 +12,8 @@ export default function AboutUs() {
           About KisanMandi
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-          Empowering farmers through transparent, technology-driven agricultural commerce
+          Empowering farmers through transparent, technology-driven agricultural
+          commerce
         </p>
       </section>
 
@@ -25,12 +27,18 @@ export default function AboutUs() {
           </CardHeader>
           <CardContent>
             <p className="text-lg text-gray-700 dark:text-gray-300">
-              To create a fair and equitable digital marketplace where farmers can directly connect with buyers,
-              ensuring optimal pricing through real-time demand-supply matching and transparent bidding systems.
+              To create a fair and equitable digital marketplace where farmers
+              can directly connect with buyers, ensuring optimal pricing through
+              real-time demand-supply matching and transparent bidding systems.
             </p>
           </CardContent>
         </Card>
       </section>
+
+      <h1>Create a Bid:</h1>
+      <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+        <a href="/create-bid">Start Auction</a>
+      </button>
 
       {/* How It Works */}
       <section className="mb-16">
@@ -40,28 +48,38 @@ export default function AboutUs() {
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
-              icon: <ScaleIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />,
+              icon: (
+                <ScaleIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />
+              ),
               title: "Fair Pricing Mechanism",
-              desc: "Our AI-powered bidding system analyzes market trends in real-time to ensure farmers get the best possible price for their produce."
+              desc: "Our AI-powered bidding system analyzes market trends in real-time to ensure farmers get the best possible price for their produce.",
             },
             {
-              icon: <ShieldCheckIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />,
+              icon: (
+                <ShieldCheckIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />
+              ),
               title: "Transparent Process",
-              desc: "Blockchain-backed transaction records provide complete transparency in pricing and bidding history."
+              desc: "Blockchain-backed transaction records provide complete transparency in pricing and bidding history.",
             },
             {
-              icon: <RocketIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />,
+              icon: (
+                <RocketIcon className="h-8 w-8 mb-4 text-green-600 dark:text-green-400" />
+              ),
               title: "Direct Connect",
-              desc: "Eliminate middlemen and connect directly with verified buyers including retailers, wholesalers, and food processing companies."
-            }
+              desc: "Eliminate middlemen and connect directly with verified buyers including retailers, wholesalers, and food processing companies.",
+            },
           ].map((feature, index) => (
             <Card key={index} className="dark:bg-gray-900 dark:border-gray-800">
               <CardHeader>
                 {feature.icon}
-                <CardTitle className="dark:text-gray-200">{feature.title}</CardTitle>
+                <CardTitle className="dark:text-gray-200">
+                  {feature.title}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {feature.desc}
+                </p>
               </CardContent>
             </Card>
           ))}
@@ -75,16 +93,30 @@ export default function AboutUs() {
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { title: "Zero Commission", desc: "No hidden charges or middlemen fees" },
-            { title: "Real-time Analytics", desc: "Market trends and price predictions" },
-            { title: "Quality Assurance", desc: "Verified buyers & quality certifications" },
-            { title: "Logistics Support", desc: "End-to-end transportation solutions" }
+            {
+              title: "Zero Commission",
+              desc: "No hidden charges or middlemen fees",
+            },
+            {
+              title: "Real-time Analytics",
+              desc: "Market trends and price predictions",
+            },
+            {
+              title: "Quality Assurance",
+              desc: "Verified buyers & quality certifications",
+            },
+            {
+              title: "Logistics Support",
+              desc: "End-to-end transportation solutions",
+            },
           ].map((feature, index) => (
-            <div 
+            <div
               key={index}
               className="text-center p-6 border rounded-lg dark:border-gray-800 dark:bg-gray-900"
             >
-              <h3 className="text-xl font-semibold mb-2 dark:text-gray-200">{feature.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 dark:text-gray-200">
+                {feature.title}
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
             </div>
           ))}
