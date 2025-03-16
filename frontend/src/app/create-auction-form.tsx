@@ -146,7 +146,9 @@ export default function CreateAuctionForm() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="product-details">Product Details</TabsTrigger>
-            <TabsTrigger value="pricing-details">Pricing & Duration</TabsTrigger>
+            <TabsTrigger value="pricing-details">
+              Pricing & Duration
+            </TabsTrigger>
             <TabsTrigger value="shipping-details">Shipping & Terms</TabsTrigger>
           </TabsList>
 
@@ -161,7 +163,10 @@ export default function CreateAuctionForm() {
                       <FormItem>
                         <FormLabel>Product Name*</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. Organic Red Apples" {...field} />
+                          <Input
+                            placeholder="e.g. Organic Red Apples"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -174,7 +179,10 @@ export default function CreateAuctionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Category*</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select a category" />
@@ -182,12 +190,20 @@ export default function CreateAuctionForm() {
                           </FormControl>
                           <SelectContent>
                             <SelectItem value="fruits">Fruits</SelectItem>
-                            <SelectItem value="vegetables">Vegetables</SelectItem>
-                            <SelectItem value="grains">Grains & Cereals</SelectItem>
-                            <SelectItem value="dairy">Dairy Products</SelectItem>
+                            <SelectItem value="vegetables">
+                              Vegetables
+                            </SelectItem>
+                            <SelectItem value="grains">
+                              Grains & Cereals
+                            </SelectItem>
+                            <SelectItem value="dairy">
+                              Dairy Products
+                            </SelectItem>
                             <SelectItem value="meat">Meat & Poultry</SelectItem>
                             <SelectItem value="nuts">Nuts & Seeds</SelectItem>
-                            <SelectItem value="herbs">Herbs & Spices</SelectItem>
+                            <SelectItem value="herbs">
+                              Herbs & Spices
+                            </SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
@@ -237,7 +253,10 @@ export default function CreateAuctionForm() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Unit*</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select unit" />
@@ -267,18 +286,31 @@ export default function CreateAuctionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Quality Grade*</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select quality grade" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="grade-a">Grade A (Premium)</SelectItem>
-                            <SelectItem value="grade-b">Grade B (Standard)</SelectItem>
-                            <SelectItem value="grade-c">Grade C (Economy)</SelectItem>
-                            <SelectItem value="organic">Certified Organic</SelectItem>
-                            <SelectItem value="natural">Natural (No Certification)</SelectItem>
+                            <SelectItem value="grade-a">
+                              Grade A (Premium)
+                            </SelectItem>
+                            <SelectItem value="grade-b">
+                              Grade B (Standard)
+                            </SelectItem>
+                            <SelectItem value="grade-c">
+                              Grade C (Economy)
+                            </SelectItem>
+                            <SelectItem value="organic">
+                              Certified Organic
+                            </SelectItem>
+                            <SelectItem value="natural">
+                              Natural (No Certification)
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -301,10 +333,14 @@ export default function CreateAuctionForm() {
                                 variant={"outline"}
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground",
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
-                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
                             </FormControl>
@@ -314,7 +350,10 @@ export default function CreateAuctionForm() {
                               mode="single"
                               selected={field.value}
                               onSelect={field.onChange}
-                              disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                              disabled={(date) =>
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
+                              }
                               initialFocus
                             />
                           </PopoverContent>
@@ -337,10 +376,14 @@ export default function CreateAuctionForm() {
                                 variant={"outline"}
                                 className={cn(
                                   "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground",
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
-                                {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
                             </FormControl>
@@ -355,7 +398,9 @@ export default function CreateAuctionForm() {
                             />
                           </PopoverContent>
                         </Popover>
-                        <FormDescription>If applicable, when will this product expire?</FormDescription>
+                        <FormDescription>
+                          If applicable, when will this product expire?
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -366,10 +411,13 @@ export default function CreateAuctionForm() {
                   <FormLabel>Product Images (Up to 4)*</FormLabel>
                   <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {images.map((img, index) => (
-                      <div key={index} className="relative aspect-square rounded-md overflow-hidden border">
+                      <div
+                        key={index}
+                        className="relative aspect-square rounded-md overflow-hidden border"
+                      >
                         <img
                           src={img || "/placeholder.svg"}
-                          alt={`Product image ${index + 1}`}                          
+                          alt={`Product image ${index + 1}`}
                           className="object-cover"
                         />
                         <Button
@@ -396,13 +444,17 @@ export default function CreateAuctionForm() {
                         />
                         <div className="text-center p-4">
                           <Upload className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
-                          <p className="text-sm text-muted-foreground">{uploading ? "Uploading..." : "Upload Image"}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {uploading ? "Uploading..." : "Upload Image"}
+                          </p>
                         </div>
                       </div>
                     )}
                   </div>
                   {images.length === 0 && (
-                    <p className="text-sm text-destructive mt-2">Please upload at least one product image</p>
+                    <p className="text-sm text-destructive mt-2">
+                      Please upload at least one product image
+                    </p>
                   )}
                 </div>
 
@@ -420,14 +472,24 @@ export default function CreateAuctionForm() {
                     name="startingBid"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Starting Bid (USD)*</FormLabel>
+                        <FormLabel>Starting Bid (INR)*</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-                            <Input type="number" min="1" step="0.01" className="pl-7" {...field} />
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                              ₹
+                            </span>
+                            <Input
+                              type="number"
+                              min="1"
+                              step="0.01"
+                              className="pl-7"
+                              {...field}
+                            />
                           </div>
                         </FormControl>
-                        <FormDescription>The minimum bid to start the auction</FormDescription>
+                        <FormDescription>
+                          The minimum bid to start the auction
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -438,27 +500,37 @@ export default function CreateAuctionForm() {
                     name="bidIncrement"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Minimum Bid Increment (USD)*</FormLabel>
+                        <FormLabel>Minimum Bid Increment (INR)*</FormLabel>
                         <FormControl>
                           <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-                            <Input type="number" min="1" step="0.01" className="pl-7" {...field} />
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                              ₹
+                            </span>
+                            <Input
+                              type="number"
+                              min="1"
+                              step="0.01"
+                              className="pl-7"
+                              {...field}
+                            />
                           </div>
                         </FormControl>
-                        <FormDescription>Minimum amount a new bid must exceed the current bid</FormDescription>
+                        <FormDescription>
+                          Minimum amount a new bid must exceed the current bid
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="reservePrice"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="flex items-center gap-2">
-                        Reserve Price (USD) (Optional)
+                        Reserve Price () (Optional)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -466,8 +538,9 @@ export default function CreateAuctionForm() {
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="max-w-xs">
-                                A reserve price is the minimum amount you're willing to accept. If bidding doesn't reach
-                                this price, you're not obligated to sell.
+                                A reserve price is the minimum amount you're
+                                willing to accept. If bidding doesn't reach this
+                                price, you're not obligated to sell.
                               </p>
                             </TooltipContent>
                           </Tooltip>
@@ -475,15 +548,25 @@ export default function CreateAuctionForm() {
                       </FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-                          <Input type="number" min="0" step="0.01" className="pl-7" {...field} />
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                            ₹
+                          </span>
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            className="pl-7"
+                            {...field}
+                          />
                         </div>
                       </FormControl>
-                      <FormDescription>Hidden minimum price you're willing to accept</FormDescription>
+                      <FormDescription>
+                        Hidden minimum price you're willing to accept
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 <FormField
                   control={form.control}
@@ -491,7 +574,10 @@ export default function CreateAuctionForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Auction Duration (Days)*</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select duration" />
@@ -506,7 +592,9 @@ export default function CreateAuctionForm() {
                           <SelectItem value="14">14 Days</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormDescription>How long your auction will be active</FormDescription>
+                      <FormDescription>
+                        How long your auction will be active
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -516,10 +604,14 @@ export default function CreateAuctionForm() {
                   <div className="flex items-start gap-3">
                     <Info className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                     <div>
-                      <h4 className="font-medium mb-1">Auction Fee Information</h4>
+                      <h4 className="font-medium mb-1">
+                        Auction Fee Information
+                      </h4>
                       <p className="text-sm text-muted-foreground">
-                        Our platform charges a 5% fee on the final selling price. This fee helps maintain the platform
-                        and provide services like secure payments, vendor verification, and dispute resolution.
+                        Our platform charges a 5% fee on the final selling
+                        price. This fee helps maintain the platform and provide
+                        services like secure payments, vendor verification, and
+                        dispute resolution.
                       </p>
                     </div>
                   </div>
@@ -543,9 +635,14 @@ export default function CreateAuctionForm() {
                     <FormItem>
                       <FormLabel>Pickup Location*</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. Farm address or nearest town" {...field} />
+                        <Input
+                          placeholder="e.g. Farm address or nearest town"
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>Where vendors can pick up the products</FormDescription>
+                      <FormDescription>
+                        Where vendors can pick up the products
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -557,11 +654,18 @@ export default function CreateAuctionForm() {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Shipping Available</FormLabel>
-                        <FormDescription>Can you arrange shipping for this product?</FormDescription>
+                        <FormLabel className="text-base">
+                          Shipping Available
+                        </FormLabel>
+                        <FormDescription>
+                          Can you arrange shipping for this product?
+                        </FormDescription>
                       </div>
                       <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -582,7 +686,8 @@ export default function CreateAuctionForm() {
                           />
                         </FormControl>
                         <FormDescription>
-                          Provide information about shipping methods, costs, and any restrictions
+                          Provide information about shipping methods, costs, and
+                          any restrictions
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -612,13 +717,15 @@ export default function CreateAuctionForm() {
                               value={cert.id}
                               checked={(field.value || []).includes(cert.id)}
                               onChange={(e) => {
-                                const checked = e.target.checked
-                                const currentValues = field.value || []
+                                const checked = e.target.checked;
+                                const currentValues = field.value || [];
                                 field.onChange(
                                   checked
                                     ? [...currentValues, cert.id]
-                                    : currentValues.filter((value) => value !== cert.id),
-                                )
+                                    : currentValues.filter(
+                                        (value) => value !== cert.id
+                                      )
+                                );
                               }}
                               className="h-4 w-4"
                             />
@@ -626,7 +733,9 @@ export default function CreateAuctionForm() {
                           </label>
                         ))}
                       </div>
-                      <FormDescription>Select any certifications that apply to your product</FormDescription>
+                      <FormDescription>
+                        Select any certifications that apply to your product
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -648,7 +757,9 @@ export default function CreateAuctionForm() {
                         />
                       </FormControl>
                       <div className="space-y-1 leading-none">
-                        <FormLabel>I agree to the Terms and Conditions*</FormLabel>
+                        <FormLabel>
+                          I agree to the Terms and Conditions*
+                        </FormLabel>
                         <FormDescription>
                           By creating this auction, you agree to our{" "}
                           <a href="#" className="text-primary underline">
@@ -670,7 +781,10 @@ export default function CreateAuctionForm() {
                   <Button type="button" variant="outline" onClick={prevTab}>
                     Back: Pricing & Duration
                   </Button>
-                  <Button type="submit" className="bg-green-600 hover:bg-green-700">
+                  <Button
+                    type="submit"
+                    className="bg-green-600 hover:bg-green-700"
+                  >
                     Create Auction
                   </Button>
                 </div>
@@ -680,6 +794,6 @@ export default function CreateAuctionForm() {
         </Tabs>
       </CardContent>
     </Card>
-  )
+  );
 }
 
