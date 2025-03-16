@@ -1,7 +1,18 @@
 import mongoose from "mongoose";
 
 const auctionSchema = new mongoose.Schema({
-  crop: {
+  product: {
+    type: String,
+    required: true,
+  },
+
+  category: {
+    type: String,
+    enum:[],
+    required: true,
+  },
+
+  description: {
     type: String,
     required: true,
   },
@@ -10,6 +21,22 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  quality: {
+    type: String,
+    enum:["Grade A","Grade B","Grade C","Certified Organic", "Natural"],
+    default:"N",
+    required: true,
+  },
+
+  unit: {
+    type: String,
+    default: "kg",
+  },
+
+  availibility: {
+    type: Boolean,
+    default: false,
+  },
 
   farmer: {
 
@@ -17,6 +44,11 @@ const auctionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
 
+  },
+
+  pickupLocation: {
+    type: String,
+    required: true,
   },
 
   currentBid: {
