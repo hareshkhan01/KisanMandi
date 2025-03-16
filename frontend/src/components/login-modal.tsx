@@ -21,11 +21,8 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement your login logic here, e.g., authentication call
     localStorage.setItem("user", username);
     window.location.reload();
-    console.log("Logging in with", { username, password });
-    // Close the modal after login
     onOpenChange(false);
   };
 
@@ -39,26 +36,32 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <Input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <DialogFooter>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <DialogFooter className="flex flex-col space-y-2">
             <Button type="submit">Login</Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                onOpenChange(false);
+                window.location.href = "/register";
+              }}
+            >
+              Register Now
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

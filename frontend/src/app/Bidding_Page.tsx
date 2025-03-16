@@ -137,7 +137,7 @@ export default function BiddingPage() {
               <img
                 src={product.images[activeImage] || "/placeholder.svg"}
                 alt={product.name}
-                className="object-cover object-fill h-fit w-full"
+                className="object-fill h-fit w-full"
               />
             </div>
             <div className="p-4 flex gap-2 overflow-x-auto">
