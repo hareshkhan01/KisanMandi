@@ -124,6 +124,20 @@ const loginUser = async (req, res, next) =>{
 
 }
 
+const farmerInfo = async (req, res, next) =>{
+    try {
+        const farmer = await userModel.findById(req.params.id)
+        .select("-password -__v -role -createdAt -updatedAt");
 
+        if(!farmer || farmer.role !== "farmer"){
+            return next(createHttpError(404, "Farmer not found"));
+        }
+        res.json(farmer);
 
-export {createUser, loginUser}
+    } catch (error) {
+        console.log("error while getting farmer info");
+        next(error);
+    }
+}
+
+export {createUser, loginUser, farmerInfo}
