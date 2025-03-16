@@ -8,6 +8,7 @@ export const setupAuctionHandlers = (io) => {
     
     // Handle bid placement
     socket.on('placeBid', async ({ auctionId, bidAmount, userId }) => {
+      console.log('Bid placed:', { auctionId, bidAmount, userId });
       try {
         // 1. Fetch auction from MongoDB
         const auction = await Auction.findById(auctionId);

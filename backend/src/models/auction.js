@@ -1,7 +1,19 @@
+import { duration } from "@mui/material";
 import mongoose from "mongoose";
 
 const auctionSchema = new mongoose.Schema({
-  crop: {
+  product: {
+    type: String,
+    required: true,
+  },
+
+  category: {
+    type: String,
+    enum:[],
+    required: true,
+  },
+
+  description: {
     type: String,
     required: true,
   },
@@ -10,6 +22,23 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  quality: {
+    type: String,
+    enum:["Grade A","Grade B","Grade C","Certified Organic", "Natural"],
+    default:"Natural",
+    required: true,
+  },
+
+  unit: {
+    type: String,
+    enum:["kg","litre","pounds"],
+    default: "kg",
+  },
+
+  availibility: {
+    type: Boolean,
+    default: false,
+  },
 
   farmer: {
 
@@ -17,6 +46,11 @@ const auctionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
 
+  },
+
+  pickupLocation: {
+    type: String,
+    required: true,
   },
 
   currentBid: {
@@ -29,7 +63,10 @@ const auctionSchema = new mongoose.Schema({
     default: "open",
   },
 
-  endTime: Date,
+  duration  : {
+    type: Number,
+    required: true
+  },
 //   createdBy: {
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: "User",

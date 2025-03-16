@@ -2,7 +2,7 @@ import axios from 'axios'
 import useTokenStore from './store';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3300',
+    baseURL: 'http://localhost:8000',
     headers: {
         "Content-Type" :'application/json',
     }
@@ -25,12 +25,46 @@ export const logIn = async (data: { email: string; password: string }) => {
     }
   };
   
-  export const createUser = async (data: { name: string; email: string; password: string }) => {
+  export const createUser = async (data: { name: string; email: string; password: string; role: string }) => {
     try {
       const response = await api.post('/api/users/register', data);
       return response.data;
     } catch (error) {
       console.error('User creation failed:', error);
+      throw error;
+    }
+  };
+
+
+ 
+  export const createAuction = async (data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+    try {
+      const response = await api.post('/api/auctions/create', data);
+      return response.data;
+    } catch (error) {
+      console.error('Auction creation failed:', error);
+      throw error;
+    }
+  };
+
+ 
+  export const updateAuction = async (id: string, data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+    try {
+      const response = await api.put(`/api/auctions/update/${id}`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Auction update failed:', error);
+      throw error;
+    }
+  };
+
+  export const getAuctions = async () => {
+    try {
+      const response = await api.get('/api/auctions');
+      // console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch auctions:', error);
       throw error;
     }
   };
