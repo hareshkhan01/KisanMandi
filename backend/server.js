@@ -2,7 +2,20 @@ import express from "express";
 import {config} from "./src/config/config.js"
 import app from "./src/app.js"
 import connectDB from "./src/config/db.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { setupAuctionHandlers } from "./src/sockets/socketHandler.js";
 // const port = config.port;
+
+
+const server=createServer(app,{
+    cors: {
+      origin: "http://localhost:5173", // Adjust based on your frontend domain
+    },
+  });
+const io=new Server(server);
+
+setupAuctionHandlers(io);
 
 const startServer = async () => {
 
@@ -10,7 +23,7 @@ const startServer = async () => {
 
       const PORT = config.port || 3000;
   
-      app.listen(PORT, () => {
+      server.listen(PORT, () => {
           console.log(`Server is running on port ${PORT}`);
       });
   }

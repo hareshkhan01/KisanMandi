@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import createHttpError from "http-errors";
 import {config} from "../config/config.js"
-
+import pkg from 'jsonwebtoken';
+const { verify } = pkg;
 const authenticate = (req, res, next) => {
  
     const token = req.header("Authorization");

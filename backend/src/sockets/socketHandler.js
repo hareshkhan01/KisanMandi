@@ -1,6 +1,7 @@
 // serever side socket logic
 
-import auctionModel from '../models/auction.js';
+import Auction from '../models/auction.js';
+
 
 export const setupAuctionHandlers = (io) => {
   io.on('connection', (socket) => {
@@ -27,14 +28,55 @@ export const setupAuctionHandlers = (io) => {
         }
 
         // 4. Update in MongoDB
-        const updatedAuction = await Auction.findByIdAndUpdate(
-          auctionId,
-          { 
-            currentBid: bidAmount,
-            highestBidder: userId 
-          },
-          { new: true } // Return updated document
-        );
+        
+        const updateBid = async (auctionId, bidAmount, userId) => {
+          try {
+              // Fetch the auction
+              const auction = await Auction.findById(auctionId);
+              if (!auction) {
+                  throw new Error("Auction not found");
+              }
+      
+              // Find existing bid by the same user
+              const existingBid = auction.highestBidder.find(bid => bid.user.toString() === userId);
+      
+              if (existingBid) {
+                  // Update bid amount only if the new bid is higher
+                  if (bidAmount > existingBid.amount) {
+                      existingBid.amount = bidAmount;
+                      existingBid.bidTime = new Date();
+                  } else {
+                      throw new Error("New bid must be higher than your previous bid");
+                  }
+              } else {
+                  // Push a new bid if the user hasn't bid before
+                  auction.highestBidder.push({
+                      user: userId,
+                      amount: bidAmount,
+                      bidTime: new Date()
+                  });
+              }
+      
+              // Sort bids in descending order & keep only the top 3
+              auction.highestBidder.sort((a, b) => b.amount - a.amount);
+              if (auction.highestBidder.length > 3) {
+                  auction.highestBidder = auction.highestBidder.slice(0, 3);
+              }
+      
+              // Update currentBid (highest bid)
+              auction.currentBid = auction.highestBidder[0]?.amount || 0;
+      
+              // Save the updated auction
+              await auction.save();
+      
+              return auction; // Return the updated auction object
+          } catch (error) {
+              throw error;
+          }
+      };
+
+        const updatedAuction = await updateBid(auctionId, bidAmount, userId);      
+        
 
         // 5. Broadcast to all room participants
         io.to(auctionId).emit('bidUpdate', {

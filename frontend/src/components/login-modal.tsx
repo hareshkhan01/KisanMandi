@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { logIn } from "@/http/api.js";
+import useTokenStore from "@/http/store";
+import { useMutation} from '@tanstack/react-query'
 
 type LoginModalProps = {
   open: boolean;
@@ -19,10 +22,26 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const setToken = useTokenStore((state) => state.setToken);
+
+  const mutation = useMutation({
+    mutationFn: logIn,
+    onSuccess: (res) => {
+      console.log("login success", res.token);
+      //redirect to dashboard
+      setToken(res.token);
+    },
+  });
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement your login logic here, e.g., authentication call
-    localStorage.setItem("user", username);
+    if (!username || !password) {
+      return alert("Please enter email and password");
+    }
+    mutation.mutate({ email: username, password });
+    // localStorage.setItem("user", username);
+    // window.location.reload();
     console.log("Logging in with", { username, password });
     // Close the modal after login
     onOpenChange(false);
@@ -38,26 +57,32 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <Input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <DialogFooter>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <DialogFooter className="flex flex-col space-y-2">
             <Button type="submit">Login</Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                onOpenChange(false);
+                window.location.href = "/register";
+              }}
+            >
+              Register Now
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
