@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import { createUser } from "@/http/api.js";
+import useTokenStore from "@/http/store";
+import { useMutation} from '@tanstack/react-query'
+
 export default function Register() {
   // If localStorage contains a user, redirect to homepage
   useEffect(() => {
@@ -17,6 +21,18 @@ export default function Register() {
   const [role, setRole] = useState("farmer");
   const [error, setError] = useState("");
 
+  const setToken = useTokenStore((state) => state.setToken);
+
+  const mutation = useMutation({
+    mutationFn: createUser,
+    onSuccess: (response) => {
+      console.log('register success')
+      console.log(response.data.token)
+
+      setToken(response.data.token)
+    },
+  })
+
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -29,6 +45,7 @@ export default function Register() {
     // Background logic for registration:
     // Replace this with your API call or registration logic.
     console.log("Registering user:", { name, email, password, role });
+    mutation.mutate({ name, email, password, role });
     
     // Optionally, after successful registration, set the user in localStorage
     // and redirect to the homepage.
