@@ -5,6 +5,20 @@ const auctionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  quantity: {
+    type: Number,
+    required: true,
+  },
+
+  farmer: {
+
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+
+  },
+
   currentBid: {
     type: Number,
     default: 0,

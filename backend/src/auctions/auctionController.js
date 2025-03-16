@@ -1,11 +1,25 @@
 
-import Auction from "../models/auction.js";
+import auctionModel from "../models/auction.js";
 async function createAuction(req, res, next) {
-    const auction = new Auction({...req.body});
+    const { crop, startingPrice } = req.body;
+    if (!crop || !startingPrice || !quantity)  {
+        return createHttpError(400, "Crop name , quantity and starting price are required");
+    }
+
     try {
-        const newAuction = await Auction.create(req.body);
+        const newAuction = await auctionModel.create({
+            ...req.body,
+            farmer: req.userId
+        });
         res.status(201).json(newAuction);
+
     } catch (error) {
+        if (error.code === 11000) {
+            return next(createHttpError(409, "Auction already exists"));
+        }
+        if (error.name === 'ValidationError') {
+            return next(createHttpError(400, error.message));
+        }
         next(error);
     }
 }
@@ -13,7 +27,7 @@ async function createAuction(req, res, next) {
 
 async function getAuctions(req, res, next) {
     try {
-        const auctions = await Auction.find();
+        const auctions = await auctionModel.find();
         res.json(auctions);
     } catch (error) {
         next(error);
@@ -22,7 +36,7 @@ async function getAuctions(req, res, next) {
 
 async function updateAuction(req, res, next) {
     try {
-        const updatedAuction = await Auction.findByIdAndUpdate(
+        const updatedAuction = await auctionModel.findByIdAndUpdate(
             req.params.id,        
             req.body,             
             { new: true }         
@@ -38,5 +52,16 @@ async function updateAuction(req, res, next) {
     }
 }
 
+const isOwner = async (req, res, next) => {
+    try {
+        const auction = await auctionModel.findById(req.params.id);
+        if (auction.farmer.toString() !== req.userId) {
+            return next(createHttpError(403, "You are not the owner of this auction"));
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
 
-export{createAuction, updateAuction,getAuctions}
+export{createAuction, updateAuction,getAuctions,isOwner}
