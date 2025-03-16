@@ -126,8 +126,8 @@ const loginUser = async (req, res, next) =>{
 
 const farmerInfo = async (req, res, next) =>{
     try {
-        const farmer = await userModel.findById(req.params.id)
-        .select("-password -__v -role -createdAt -updatedAt");
+        const farmer = await userModel.findById(req.userId)
+        .select("-password -__v  -createdAt -updatedAt -_id");
 
         if(!farmer || farmer.role !== "farmer"){
             return next(createHttpError(404, "Farmer not found"));

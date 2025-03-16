@@ -5,6 +5,6 @@ const userRouter = express.Router();
 
 userRouter.post("/register", createUser )
 userRouter.post("/login", loginUser )
-userRouter.get('/farmers/:id', authenticate, farmerInfo)
+userRouter.get('/farmers/:userId', authenticate, farmerInfo)
  
 export default userRouter
