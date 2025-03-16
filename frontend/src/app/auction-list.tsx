@@ -67,7 +67,7 @@ export default function AuctionList({
               <div>
                 <p className="text-sm text-muted-foreground">Current Bid</p>
                 <p className="text-lg font-bold">
-                  ${auction.currentBid.toLocaleString()}
+                  ₹{auction.currentBid.toLocaleString()}
                 </p>
               </div>
               <div className="text-right">
