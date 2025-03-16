@@ -37,7 +37,7 @@ export const logIn = async (data: { email: string; password: string }) => {
 
 
  
-  export const createAuction = async (data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+  export const createAuction = async (data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number;duration: number }) => {
     try {
       const response = await api.post('/api/auctions/create', data);
       return response.data;
@@ -48,7 +48,7 @@ export const logIn = async (data: { email: string; password: string }) => {
   };
 
  
-  export const updateAuction = async (id: string, data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+  export const updateAuction = async (id: string, data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number; duration: number}) => {
     try {
       const response = await api.put(`/api/auctions/update/${id}`, data);
       return response.data;

@@ -10,34 +10,46 @@ export const setupAuctionHandlers = (io) => {
     socket.on('placeBid', async ({ auctionId, bidAmount, userId }) => {
       console.log('Bid placed:', { auctionId, bidAmount, userId });
       try {
-        // 1. Fetch auction from MongoDB
+        // 1. Fetch auction from MongoDBc
+        console.log("Start.")
+
         const auction = await Auction.findById(auctionId);
         
+        console.log("After 1 line of start")
         if (!auction) {
+          console.log("Auction Not found")
           return socket.emit('bidError', 'Auction not found');
         }
 
         // 2. Validate auction status
         if (auction.status !== 'open') {
+          console.log("Not valid")
           return socket.emit('bidError', 'Auction has closed');
         }
 
         // 3. Validate bid amount
         if (bidAmount <= auction.currentBid) {
+          console.log("Bid amount must be greater.")
           return socket.emit('bidError', 
             `Bid must be higher than current $${auction.currentBid}`);
         }
 
         // 4. Update in MongoDB
+        console.log("here 1")
         
         const updateBid = async (auctionId, bidAmount, userId) => {
           try {
               // Fetch the auction
               const auction = await Auction.findById(auctionId);
+              console.log(auction)
               if (!auction) {
                   throw new Error("Auction not found");
               }
       
+              if (!auction.duration || !auction.pickupLocation || !auction.description ||
+                !auction.category || !auction.product) {
+                throw new Error("Auction is missing required fields.");
+            }
               // Find existing bid by the same user
               const existingBid = auction.highestBidder.find(bid => bid.user.toString() === userId);
       

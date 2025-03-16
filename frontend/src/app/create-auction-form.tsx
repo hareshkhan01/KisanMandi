@@ -25,6 +25,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 
+import { createAuction } from "@/http/api"
+import { useMutation} from '@tanstack/react-query'
+
 // Form schema validation
 const formSchema = z.object({
   productName: z.string().min(3, { message: "Product name must be at least 3 characters" }),
@@ -100,27 +103,63 @@ export default function CreateAuctionForm() {
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
+
+  const mutation = useMutation({
+    mutationFn: createAuction,
+    onSuccess: (data) => {
+      console.log("Auction created successfully:", data);
+      alert("Auction created successfully! Redirecting to your listings...");
+      // Optionally reset the form and images, and perform any redirection
+      // form.reset();
+      // setImages([]);
+      // router.push('/farmer/listings'); // Uncomment if using a router
+    },
+    onError: (error) => {
+      console.error("Auction creation failed:", error);
+      alert("Auction creation failed, please try again.");
+    },
+  });
+
+  // Handle form submission
+  // const onSubmit = (data: FormValues) => {
+  //   // In a real app, you would send this data to your API
+  //   console.log({
+  //     ...data,
+  //     images,
+  //     startingBid: Number.parseFloat(data.startingBid),
+  //     bidIncrement: Number.parseFloat(data.bidIncrement),
+  //     reservePrice: data.reservePrice ? Number.parseFloat(data.reservePrice) : undefined,
+  //   })
+
+  //   // Show success message and redirect
+  //   alert("Auction created successfully! Redirecting to your listings...")
+
+  //   // In a real app, you would redirect to the newly created auction or a listings page
+  //   // router.push('/farmer/listings');
+
+  //   // For demo purposes, we'll just reset the form
+  //   form.reset()
+  //   setImages([])
+  // }
   // Handle form submission
   const onSubmit = (data: FormValues) => {
-    // In a real app, you would send this data to your API
-    console.log({
-      ...data,
-      images,
-      startingBid: Number.parseFloat(data.startingBid),
-      bidIncrement: Number.parseFloat(data.bidIncrement),
-      reservePrice: data.reservePrice ? Number.parseFloat(data.reservePrice) : undefined,
-    })
-
-    // Show success message and redirect
-    alert("Auction created successfully! Redirecting to your listings...")
-
-    // In a real app, you would redirect to the newly created auction or a listings page
-    // router.push('/farmer/listings');
-
-    // For demo purposes, we'll just reset the form
-    form.reset()
-    setImages([])
-  }
+    // Map form values to the payload structure expected by your API
+    const auctionPayload = {
+      product: data.productName, // mapping productName to product
+      category: data.category,
+      description: data.description,
+      quality: data.quality,
+      unit: data.unit,
+      pickupLocation: data.pickupLocation,
+      currentBid: Number.parseInt(data.startingBid),
+      quantity: Number.parseInt(data.quantity),
+      duration: Number.parseInt(data.auctionDuration, 10),
+      // You can also include additional fields if needed (e.g., images)
+    };
+    console.log(auctionPayload);
+    // Trigger the mutation to create the auction
+    mutation.mutate(auctionPayload);
+  };
 
   // Move to next tab
   const nextTab = () => {

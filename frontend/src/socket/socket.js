@@ -13,4 +13,8 @@ export const placeBid = async (auctionId, bidAmount, userId) => {
     socket.emit('placeBid', { auctionId, bidAmount, userId });
 }
 
+export const updateBid = async (callback) => {
+    socket.on("bidUpdate", callback);
+}
+
 export default socket
