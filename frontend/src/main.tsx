@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Home from "./Pages/Home";
 import { ThemeProvider } from "./components/theme-provider"
 import Navbar from "./app/Navbar";
@@ -8,6 +9,9 @@ import Footer from "./app/Footer.js";
 import Bidding from "./Pages/Bidding.js";
 import Register from './app/register.js';
 import './index.css'
+
+// Create a new QueryClient instance
+const queryClient = new QueryClient();
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -48,8 +52,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
