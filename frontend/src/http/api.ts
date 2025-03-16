@@ -34,4 +34,38 @@ export const logIn = async (data: { email: string; password: string }) => {
       throw error;
     }
   };
+
+
+  // Not Complete Add more fields later
+  export const createAuction = async (data: { crop: string; currentBid: number; quantity: number }) => {
+    try {
+      const response = await api.post('/api/auctions/create', data);
+      return response.data;
+    } catch (error) {
+      console.error('Auction creation failed:', error);
+      throw error;
+    }
+  };
+
+  //Not Complete yet
+  export const updateAuction = async (id: string, data: { crop: string; currentBid: number; quantity: number }) => {
+    try {
+      const response = await api.put(`/api/auctions/update/${id}`, data);
+      return response.data;
+    } catch (error) {
+      console.error('Auction update failed:', error);
+      throw error;
+    }
+  };
+
+  export const getAuctions = async () => {
+    try {
+      const response = await api.get('/api/auctions');
+      // console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch auctions:', error);
+      throw error;
+    }
+  };
   

@@ -9,4 +9,8 @@ export const socketConnect=()=>{
      });
 }
 
+export const placeBid = async (auctionId, bidAmount, userId) => {
+    socket.emit('placeBid', { auctionId, bidAmount, userId });
+}
+
 export default socket
