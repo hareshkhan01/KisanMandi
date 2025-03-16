@@ -8,6 +8,7 @@ const auctionSchema = new mongoose.Schema({
 
   category: {
     type: String,
+    enum:[],
     required: true,
   },
 
@@ -19,6 +20,17 @@ const auctionSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: true,
+  },
+  quality: {
+    type: String,
+    enum:["Grade A","Grade B","Grade C","Certified Organic", "Natural"],
+    default:"N",
+    required: true,
+  },
+
+  unit: {
+    type: String,
+    default: "kg",
   },
 
   availibility: {
