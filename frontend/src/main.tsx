@@ -9,7 +9,10 @@ import Footer from "./app/Footer.js";
 import Bidding from "./Pages/Bidding.js";
 import Register from './app/register.js';
 import CreateAuctionForm from "./app/create-auction-form.js";
+import AuctionDashboard from "./app/auction-dashboard.js";
 import './index.css'
+import AboutUs from './app/AboutUs.js';
+import ContactUs from './app/Contactus.js';
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -34,7 +37,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "bidding",
+        path: "auctions/:id",
         element: <Bidding />,
       },
       {
@@ -42,8 +45,20 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "create-bid",
+        path: "aboutus",
+        element: <AboutUs />,
+      },
+      {
+        path: "contactus",
+        element: <ContactUs />,
+      },
+      {
+        path: "create-auction",
         element: <CreateAuctionForm />,
+      },
+      {
+        path: "auctionlist",
+        element: <AuctionDashboard />,
       },
     ],
   },

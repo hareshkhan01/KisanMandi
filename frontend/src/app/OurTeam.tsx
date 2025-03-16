@@ -5,7 +5,7 @@ const teamData = [
   {
     id: 1,
     name: "Rahul Sharma",
-    role: "Co-Founder & CEO",
+    role: "FrontEnd Developer",
     description: "Agricultural tech enthusiast with 10+ years in supply chain management",
     social: {
       linkedin: "#",
@@ -17,7 +17,7 @@ const teamData = [
   {
     id: 2,
     name: "Priya Patel",
-    role: "CTO",
+    role: "BackEnd Developer",
     description: "Full-stack developer specializing in blockchain solutions",
     social: {
       linkedin: "#",
@@ -29,7 +29,7 @@ const teamData = [
   {
     id: 3,
     name: "Arjun Singh",
-    role: "Head of Operations",
+    role: "FrontEnd Developer",
     description: "Expert in agricultural logistics and quality control",
     social: {
       linkedin: "#",
@@ -41,7 +41,7 @@ const teamData = [
   {
     id: 4,
     name: "Arjun Singh",
-    role: "Head of Operations",
+    role: "BackEnd Developer",
     description: "Expert in agricultural logistics and quality control",
     social: {
       linkedin: "#",
@@ -64,10 +64,10 @@ export default function OurTeam() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {teamData.map((member) => (
           <Card key={member.id} className="p-6 dark:bg-gray-800 dark:border-gray-700">
-            <div className="mb-4 rounded-full bg-gray-100 dark:bg-gray-700 h-48 w-48 mx-auto flex items-center justify-center">
+            <div className="mb-4 rounded-full bg-gray-100 dark:bg-gray-700 h-30 w-30 mx-auto flex items-center justify-center">
               {/* Replace with actual image */}
               <span className="text-gray-400 dark:text-gray-300 text-4xl">👤</span>
             </div>
@@ -77,9 +77,9 @@ export default function OurTeam() {
             <p className="text-center text-green-600 dark:text-green-400 mb-4">
               {member.role}
             </p>
-            <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
+            {/* <p className="text-gray-600 dark:text-gray-400 text-center mb-6">
               {member.description}
-            </p>
+            </p> */}
             <div className="flex justify-center space-x-4">
               <a 
                 href={member.social.linkedin} 

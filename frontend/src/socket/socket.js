@@ -1,6 +1,7 @@
+import { useMemo } from "react";
 import { io } from "socket.io-client";
 
-const socket=io("http://localhost:3300");
+const socket=io("http://localhost:3001")
 
 
 export const socketConnect=()=>{
