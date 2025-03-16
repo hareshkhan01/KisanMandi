@@ -22,6 +22,8 @@ import { Progress } from "@/components/ui/progress";
 import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
+import {placeBid} from "@/socket/socket.js";
+
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
   id: "prod-123",
@@ -108,6 +110,7 @@ export default function BiddingPage() {
       return;
     }
 
+    placeBid(bids.length+1, bidAmount, "user123");
     // In a real app, you would send this bid to your API
     const newBid = {
       id: bids.length + 1,
