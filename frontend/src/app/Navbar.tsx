@@ -47,27 +47,30 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
       {/* Login Modal */}
-      <LoginModal 
-        open={isLoginModalOpen} 
+      <LoginModal
+        open={isLoginModalOpen}
         onOpenChange={setIsLoginModalOpen}
         onLoginSuccess={handleLoginSuccess}
       />
-      
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Website Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-primary">KisanMandi</span>
+            <span className="text-2xl font-bold  text-green-800">
+              <span className="text-orange-600">Kisan</span>Mandi
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2" >
+              <NavLink to="/">Home</NavLink>
               <NavLink to="/auctionlist">Marketplace</NavLink>
               <NavLink to="/products">Farm Products</NavLink>
-              <NavLink to="/services">Services</NavLink>
+              {/* <NavLink to="/services">Services</NavLink> */}
               <NavLink to="/aboutus">About Us</NavLink>
-              <NavLink to="/contact">Contact</NavLink>
+              <NavLink to="/contactus">Contact</NavLink>
             </div>
             <div className="ml-4 flex items-center gap-2">
               <ModeToggle />
@@ -76,18 +79,14 @@ export default function Navbar() {
                   <span className="text-sm font-semibold">
                     Welcome, {localStorage.getItem("user")}
                   </span>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleLogout}
-                  >
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout
                   </Button>
                 </div>
               ) : (
-                <Button 
-                  variant="default" 
-                  size="sm" 
+                <Button
+                  variant="default"
+                  size="sm"
                   onClick={() => setIsLoginModalOpen(true)}
                 >
                   Login
@@ -120,8 +119,8 @@ export default function Navbar() {
                         Logout
                       </Button>
                     ) : (
-                      <Button 
-                        className="w-full" 
+                      <Button
+                        className="w-full"
                         onClick={() => {
                           setIsOpen(false);
                           setIsLoginModalOpen(true);

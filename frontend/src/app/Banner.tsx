@@ -6,9 +6,9 @@ import 'swiper/css/pagination';
 import { Card, CardContent } from "@/components/ui/card";
 
 const banners = [
-  { id: 1, image: 'https://picsum.photos/800/400?random=1', alt: 'Government Ad 1' },
-  { id: 2, image: 'https://picsum.photos/800/400?random=2', alt: 'Government Ad 2' },
-  { id: 3, image: 'https://picsum.photos/800/400?random=3', alt: 'Government Ad 3' }
+  // { id: 1, image: 'img/6.webp', alt: 'Government Ad 1' },
+  { id: 2, image: 'img/5.jpg', alt: 'Government Ad 2' },
+  { id: 3, image: 'img/7.jpg', alt: 'Government Ad 3' }
 ];
 
 export default function Banner() {
@@ -43,7 +43,7 @@ export default function Banner() {
                 <img
                   src={banner.image}
                   alt={banner.alt}
-                  className="w-full h-72 sm:h-80 object-cover object-center"
+                  className="w-full h-72 sm:h-80  object-center"
                 />
               </SwiperSlide>
             ))}
