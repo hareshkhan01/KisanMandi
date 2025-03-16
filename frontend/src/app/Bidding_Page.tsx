@@ -41,7 +41,7 @@ const initialProduct = {
   timeLeft: 3 * 60 * 60 * 1000, // 3 hours in milliseconds
   images: [
     "img/1.jpg",
-    "img/2.jpg?height=400&width=600",
+    "img/2.jpg",
     "img/3.jpg?height=1000&width=1500",
     "img/4.jpg?height=400&width=600",
   ],
@@ -137,7 +137,7 @@ export default function BiddingPage() {
               <img
                 src={product.images[activeImage] || "/placeholder.svg"}
                 alt={product.name}
-                className="object-cover object-fill h-fit w-full"
+                className="object-fill h-fit w-full"
               />
             </div>
             <div className="p-4 flex gap-2 overflow-x-auto">
@@ -286,7 +286,7 @@ export default function BiddingPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Current Bid</p>
                     <p className="text-3xl font-bold">
-                      ${product.currentBid.toLocaleString()}
+                      ₹{product.currentBid.toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -294,7 +294,7 @@ export default function BiddingPage() {
                       Starting Bid
                     </p>
                     <p className="text-xl">
-                      ${product.minBid.toLocaleString()}
+                      ₹{product.minBid.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -315,18 +315,18 @@ export default function BiddingPage() {
 
                 <p className="text-sm text-muted-foreground">
                   <span className="font-medium">{bids.length} bids</span> so
-                  far. Minimum increment: ${product.bidIncrement}
+                  far. Minimum increment: ₹{product.bidIncrement}
                 </p>
               </div>
 
               <form onSubmit={handleBidSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="bid-amount" className="text-sm font-medium">
-                    Your Bid (USD)
+                    Your Bid (INR)
                   </label>
                   <div className="relative mt-1">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                      $
+                      ₹
                     </span>
                     <Input
                       id="bid-amount"
