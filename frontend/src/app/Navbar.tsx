@@ -63,10 +63,10 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <NavLink to="/market">Market Prices</NavLink>
+              <NavLink to="/auctionlist">Marketplace</NavLink>
               <NavLink to="/products">Farm Products</NavLink>
               <NavLink to="/services">Services</NavLink>
-              <NavLink to="/about">About Us</NavLink>
+              <NavLink to="/aboutus">About Us</NavLink>
               <NavLink to="/contact">Contact</NavLink>
             </div>
             <div className="ml-4 flex items-center gap-2">
