@@ -2,6 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
+import { getAuctions } from "@/http/api";
+import { useEffect,useState } from "react";
 
 interface AuctionItem {
   id: string;
@@ -24,9 +26,22 @@ export default function AuctionList({
   auctions,
   showManageOptions = false,
 }: AuctionListProps) {
+  const [auctionList,setAuctionList] = useState([]);
+  useEffect(() => {
+    const fetchAuctions = async () => {
+      try {
+        const response = await getAuctions();
+        console.log(response)
+        setAuctionList(response);
+      } catch (error) {
+        console.error('Error fetching auctions:', error);
+      }
+    };
+    fetchAuctions();
+  },[]);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {auctions.map((auction) => (
+      {auctionList.map((auction) => (
         <Card key={auction.id} className="overflow-hidden">
           <div className="relative">
             <div className="relative h-48 w-full">
