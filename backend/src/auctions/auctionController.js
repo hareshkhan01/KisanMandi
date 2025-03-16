@@ -39,4 +39,4 @@ async function updateAuction(req, res, next) {
 }
 
 
-export { createAuction,getAuctions, updateAuction }
+export{createAuction, updateAuction,getAuctions}
