@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { logIn } from "@/http/api.js";
+import useTokenStore from "@/http/store";
+import { useMutation} from '@tanstack/react-query'
 
 type LoginModalProps = {
   open: boolean;
@@ -19,11 +22,26 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const setToken = useTokenStore((state) => state.setToken);
+
+  const mutation = useMutation({
+    mutationFn: logIn,
+    onSuccess: (res) => {
+      console.log("login success", res.token);
+      //redirect to dashboard
+      setToken(res.token);
+    },
+  });
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement your login logic here, e.g., authentication call
-    localStorage.setItem("user", username);
-    window.location.reload();
+    if (!username || !password) {
+      return alert("Please enter email and password");
+    }
+    mutation.mutate({ email: username, password });
+    // localStorage.setItem("user", username);
+    // window.location.reload();
     console.log("Logging in with", { username, password });
     // Close the modal after login
     onOpenChange(false);
