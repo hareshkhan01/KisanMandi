@@ -1,9 +1,10 @@
 import createHttpError from "http-errors";
 import auctionModel from "../models/auction.js";
 async function createAuction(req, res, next) {
-    const { crop, currentBid, quantity} = req.body;
-    if (!crop || !currentBid || !quantity)  {
-        return createHttpError(400, "Crop name , quantity and starting price are required");
+    const { product, currentBid, quantity, quality, description, category } = req.body;
+    
+    if (!product || !currentBid || !quantity) {  
+        return next(createHttpError(400, "Product name, quantity, and starting price are required"));
     }
 
     try {
@@ -12,7 +13,6 @@ async function createAuction(req, res, next) {
             farmer: req.userId
         });
         res.status(201).json(newAuction);
-
     } catch (error) {
         if (error.code === 11000) {
             return next(createHttpError(409, "Auction already exists"));
@@ -23,6 +23,7 @@ async function createAuction(req, res, next) {
         next(error);
     }
 }
+
 
 
 async function getAuctions(req, res, next) {
