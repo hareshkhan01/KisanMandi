@@ -12,7 +12,7 @@ export default function Navbar() {
 
   // Check auth status on initial load
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem("token");
     setIsLoggedIn(!!user);
   }, []);
 
@@ -22,7 +22,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
   };
 
