@@ -22,7 +22,7 @@ import { Progress } from "@/components/ui/progress";
 import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
-import {placeBid} from "@/socket/socket.js";
+import {placeBid,updateBid} from "@/socket/socket.js";
 
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
@@ -51,6 +51,17 @@ const initialProduct = {
   quality: "Grade A",
   harvestDate: "2023-10-15",
 };
+
+
+const updateBidCallback = async (data)=>{
+  console.log(data);
+}
+
+
+
+
+
+
 
 const initialBids = [
   {
@@ -102,6 +113,10 @@ export default function BiddingPage() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    updateBid(updateBidCallback)
+  }, []);
+
   const handleBidSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -110,7 +125,8 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid(bids.length+1, bidAmount, "user123");
+    placeBid("67d6c63e30d588907fbabbd7", bidAmount+100000, "67d656626dbdd92427640e2d");
+    
     // In a real app, you would send this bid to your API
     const newBid = {
       id: bids.length + 1,
@@ -126,6 +142,7 @@ export default function BiddingPage() {
       currentBid: bidAmount,
     });
     setBidAmount(bidAmount + product.bidIncrement);
+
   };
 
   const visibleBids = showAllBidders ? bids : bids.slice(0, 3);
