@@ -90,7 +90,7 @@ export default function Navbar() {
                   size="sm" 
                   onClick={() => setIsLoginModalOpen(true)}
                 >
-                  Farmer Login
+                  Login
                 </Button>
               )}
             </div>
@@ -127,7 +127,7 @@ export default function Navbar() {
                           setIsLoginModalOpen(true);
                         }}
                       >
-                        Farmer Login
+                        Login
                       </Button>
                     )}
                   </div>
