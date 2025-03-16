@@ -11,6 +11,7 @@ import Register from './app/register.js';
 import CreateAuctionForm from "./app/create-auction-form.js";
 import AuctionDashboard from "./app/auction-dashboard.js";
 import './index.css'
+import AboutUs from './app/AboutUs.js';
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "create-bid",
+        path: "aboutus",
+        element: <AboutUs />,
+      },
+      {
+        path: "create-auction",
         element: <CreateAuctionForm />,
       },
       {
