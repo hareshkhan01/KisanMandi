@@ -8,6 +8,7 @@ import Navbar from "./app/Navbar";
 import Footer from "./app/Footer.js";
 import Bidding from "./Pages/Bidding.js";
 import Register from './app/register.js';
+import CreateAuctionForm from "./app/create-auction-form.js";
 import './index.css'
 
 // Create a new QueryClient instance
@@ -30,18 +31,22 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "bidding",
-        element: <Bidding />
+        element: <Bidding />,
       },
       {
         path: "register",
-        element: <Register />
-      }
-    ]
-  }
+        element: <Register />,
+      },
+      {
+        path: "create-bid",
+        element: <CreateAuctionForm />,
+      },
+    ],
+  },
 ]);
 
 // Ensure the root element exists in the HTML file and matches this ID
