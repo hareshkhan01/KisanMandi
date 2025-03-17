@@ -148,7 +148,7 @@ export const mockMyAuctions = [
     id: "my-auction-2",
     name: "Fresh Herbs Assortment",
     description: "Variety pack of fresh culinary herbs for restaurants.",
-    image: "/placeholder.svg?height=200&width=400",
+    image: "img/2.jpg",
     category: "herbs",
     currentBid: 750,
     minBid: 600,
@@ -168,7 +168,7 @@ export const mockMyAuctions = [
     id: "my-auction-3",
     name: "Organic Free-Range Eggs",
     description: "Farm-fresh eggs from free-range, organically fed chickens.",
-    image: "/placeholder.svg?height=200&width=400",
+    image: "img/3.jpg",
     category: "other",
     currentBid: 450,
     minBid: 350,
@@ -184,5 +184,5 @@ export const mockMyAuctions = [
     quality: "Organic",
     createdAt: "2023-10-17T09:15:00Z",
   },
-]
+];
 

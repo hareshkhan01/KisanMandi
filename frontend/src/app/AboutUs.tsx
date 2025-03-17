@@ -35,10 +35,6 @@ export default function AboutUs() {
         </Card>
       </section>
 
-      <h1>Create a Bid:</h1>
-      <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-        <a href="/create-bid">Start Auction</a>
-      </button>
 
       {/* How It Works */}
       <section className="mb-16">
