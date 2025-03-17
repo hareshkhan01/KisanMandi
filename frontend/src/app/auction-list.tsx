@@ -94,7 +94,7 @@ export default function AuctionList({
               </div>
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <div className="flex items-center gap-1 text-amber-600 mb-1">
                 <Clock className="h-4 w-4" />
                 <span className="text-xs font-medium">Ends in:</span>
@@ -121,7 +121,7 @@ export default function AuctionList({
                   <p className="text-xs text-muted-foreground">Seconds</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {showManageOptions ? (
               <div className="grid grid-cols-2 gap-2">
