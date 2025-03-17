@@ -1,8 +1,9 @@
 import axios from 'axios'
 import useTokenStore from './store';
-
+//@ts-expect-error: Unreachable code error
+import {config} from "../../../backend/src/config/config.js"
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: `http://localhost:${config.port}`,
     headers: {
         "Content-Type" :'application/json',
     }
