@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { io } from "socket.io-client";
 import {config} from "../../../backend/src/config/config.js";
-const socket=io(`http://localhost:${config.port}`);
+const socket=io(`http://localhost:3300`);
 
 
 export const socketConnect=()=>{
@@ -14,6 +14,8 @@ export const placeBid = async (auctionId, bidAmount, userId) => {
     socket.emit('placeBid', { auctionId, bidAmount, userId });
 }
 
-
+export const updateBid = async (auctionId, bidAmount, userId) => {
+    socket.emit('bidUpdate', { auctionId, bidAmount, userId });
+}
 
 export default socket
