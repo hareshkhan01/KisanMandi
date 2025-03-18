@@ -2,7 +2,7 @@ import axios from 'axios'
 import useTokenStore from './store';
 
 const api = axios.create({
-    baseURL: `http://localhost:3300`,
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         "Content-Type" :'application/json',
     }
@@ -65,6 +65,16 @@ export const logIn = async (data: { email: string; password: string }) => {
       return response.data;
     } catch (error) {
       console.error('Failed to fetch auctions:', error);
+      throw error;
+    }
+  };
+
+  export const getAuctionById = async (id: string) => {
+    try {
+      const response = await api.get(`/api/auctions/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch auction:', error);
       throw error;
     }
   };
