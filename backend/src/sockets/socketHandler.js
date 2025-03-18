@@ -11,12 +11,10 @@ export const setupAuctionHandlers = (io) => {
       console.log('Bid placed:', { auctionId, bidAmount, userId });
       try {
         // 1. Fetch auction from MongoDBc
-        console.log("Start.")
 
         const auction = await Auction.findById(auctionId);
         const user = await User.findById(userId);
         
-        console.log("After 1 line of start")
         if (!auction) {
           console.log("Auction Not found")
           return socket.emit('bidError', 'Auction not found');
@@ -38,9 +36,6 @@ export const setupAuctionHandlers = (io) => {
         }
 
         // 4. Update in MongoDB
-        console.log("here 1")
-
-        console.log("User:",user);
         
         const updateBid = async (auctionId, bidAmount, userId) => {
           try {
@@ -68,9 +63,8 @@ export const setupAuctionHandlers = (io) => {
                   }
               } else {
                   // Push a new bid if the user hasn't bid before
-                  console.log("User: Auction",user)
                   auction.highestBidder.push({
-                      user: user,
+                      user: user._id,
                       userName: user.name,
                       amount: bidAmount,
                       bidTime: new Date()

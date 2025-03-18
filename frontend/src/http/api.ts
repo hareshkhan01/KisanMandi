@@ -78,4 +78,14 @@ export const logIn = async (data: { email: string; password: string }) => {
       throw error;
     }
   };
+
+  export const getFarmerById = async (id: string) => {
+    try {
+      const response = await api.get(`/api/users/farmers/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch farmer:', error);
+      throw error;
+    }
+  };
   
