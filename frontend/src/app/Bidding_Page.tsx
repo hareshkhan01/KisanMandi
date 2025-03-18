@@ -24,7 +24,7 @@ import CountdownTimer from "@/app/countdown-timer";
 
 import {placeBid,updateBid,useSocket} from "@/socket/socket.js";
 import { useParams } from "react-router-dom";
-import { getAuctionById } from "@/http/api";
+import { getAuctionById,getFarmerById } from "@/http/api";
 import useTokenStore from '../http/store';
 
 // Mock data - in a real app, this would come from your API/database
@@ -104,8 +104,10 @@ export default function BiddingPage() {
 
   const socket=useSocket();
 
-  const [userId,setUserId] = useState();
+  const [userId,setUserId] = useState("");
   const [product, setProduct] = useState(initialProduct);
+  const [auction, setAuction] = useState();
+  const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState(initialBids);
   const [bidAmount, setBidAmount] = useState(
     product.currentBid + product.bidIncrement
@@ -122,6 +124,22 @@ export default function BiddingPage() {
     setUserId(userId);
     updateBid(socket,updateBidCallback)
   }, []);
+
+  useEffect(() => {
+    const fetchAuction = async () => {
+      try {
+        const response = await getAuctionById(id);
+        setAuction(response);
+        console.log(response)
+        const farmer = await getFarmerById(response.farmer);
+        setFarmer(farmer);
+        console.log(farmer)
+      } catch (error) {
+        console.error("Error fetching auction:", error);
+      }
+    }
+    fetchAuction();
+  },[])
 
   const handleBidSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,12 +266,12 @@ export default function BiddingPage() {
                         {product.farmer.name}
                       </h3>
                       <p className="text-muted-foreground">
-                        {product.farmer.location}
+                      Riverside County {/* {product.farmer.location} this need to be done later*/}
                       </p>
                       <div className="flex items-center mt-2">
                         <Award className="h-4 w-4 text-yellow-500 mr-1" />
                         <span className="font-medium">
-                          {product.farmer.rating}
+                          4.8 {/* {product.farmer.rating} */}
                         </span>
                         <span className="text-muted-foreground ml-1">
                           /5 Rating

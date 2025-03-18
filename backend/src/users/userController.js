@@ -125,8 +125,9 @@ const loginUser = async (req, res, next) =>{
 }
 
 const farmerInfo = async (req, res, next) =>{
+    console.log("Farmer UserId:",req.params.userId);
     try {
-        const farmer = await userModel.findById(req.userId)
+        const farmer = await userModel.findById(req.params.userId)
         .select("-password -__v  -createdAt -updatedAt -_id");
 
         if(!farmer || farmer.role !== "farmer"){
