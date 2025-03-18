@@ -26,6 +26,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const setToken = useTokenStore((state) => state.setToken);
   const setRole = useTokenStore((state) => state.setRole);
   const setName = useTokenStore((state) => state.setName);
+  const setUserId = useTokenStore((state) => state.setUserId);
 
   const mutation = useMutation({
     mutationFn: logIn,
@@ -35,6 +36,7 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
       setToken(res.token);
       setRole(res.role);
       setName(res.name);
+      setUserId(res.userId);
     },
   });
 

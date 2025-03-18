@@ -79,6 +79,10 @@ const auctionSchema = new mongoose.Schema({
         ref: "User",
         required: true,
       },
+      userName: {
+        type: String,
+        required: true,
+      },
       amount: {
         type: Number,
         required: true,

@@ -25,6 +25,7 @@ import CountdownTimer from "@/app/countdown-timer";
 import {placeBid,updateBid,useSocket} from "@/socket/socket.js";
 import { useParams } from "react-router-dom";
 import { getAuctionById } from "@/http/api";
+import useTokenStore from '../http/store';
 
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
@@ -102,6 +103,8 @@ export default function BiddingPage() {
   const { id } = useParams();
 
   const socket=useSocket();
+
+  const [userId,setUserId] = useState();
   const [product, setProduct] = useState(initialProduct);
   const [bids, setBids] = useState(initialBids);
   const [bidAmount, setBidAmount] = useState(
@@ -114,6 +117,9 @@ export default function BiddingPage() {
   
 
   useEffect(() => {
+    // Fethc user id from localstorage
+    const userId = useTokenStore.getState().userId;
+    setUserId(userId);
     updateBid(socket,updateBidCallback)
   }, []);
 
@@ -125,7 +131,7 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid(socket,id, bidAmount+100000, "67d656626dbdd92427640e2d");
+    placeBid(socket,id, bidAmount+100000, userId);
     
     // In a real app, you would send this bid to your API
     const newBid = {
