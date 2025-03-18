@@ -1,7 +1,7 @@
 // serever side socket logic
 
 import Auction from '../models/auction.js';
-
+import User from '../models/user.js';
 
 export const setupAuctionHandlers = (io) => {
   io.on('connection', (socket) => {
@@ -14,6 +14,7 @@ export const setupAuctionHandlers = (io) => {
         console.log("Start.")
 
         const auction = await Auction.findById(auctionId);
+        const user = await User.findById(userId);
         
         console.log("After 1 line of start")
         if (!auction) {
@@ -27,6 +28,8 @@ export const setupAuctionHandlers = (io) => {
           return socket.emit('bidError', 'Auction has closed');
         }
 
+        socket.join(auctionId);
+
         // 3. Validate bid amount
         if (bidAmount <= auction.currentBid) {
           console.log("Bid amount must be greater.")
@@ -36,12 +39,14 @@ export const setupAuctionHandlers = (io) => {
 
         // 4. Update in MongoDB
         console.log("here 1")
+
+        console.log("User:",user);
         
         const updateBid = async (auctionId, bidAmount, userId) => {
           try {
               // Fetch the auction
-              const auction = await Auction.findById(auctionId);
-              console.log(auction)
+              
+              // console.log(auction)
               if (!auction) {
                   throw new Error("Auction not found");
               }
@@ -90,6 +95,7 @@ export const setupAuctionHandlers = (io) => {
 
         const updatedAuction = await updateBid(auctionId, bidAmount, userId);      
         
+        // console.log(updatedAuction)
 
         // 5. Broadcast to all room participants
         io.to(auctionId).emit('bidUpdate', {

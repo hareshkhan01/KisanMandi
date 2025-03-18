@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 // import Image from "next/image";
 import {
   Clock,
@@ -22,7 +22,9 @@ import { Progress } from "@/components/ui/progress";
 import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
-import {placeBid,updateBid} from "@/socket/socket.js";
+import {placeBid,updateBid,useSocket} from "@/socket/socket.js";
+import { useParams } from "react-router-dom";
+import { getAuctionById } from "@/http/api";
 
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
@@ -53,8 +55,10 @@ const initialProduct = {
 };
 
 
+// just testing updateBid and its worked but not properly implemented
+
 const updateBidCallback = async (data)=>{
-  console.log(data);
+  console.log("Callback:",data);
 }
 
 
@@ -95,6 +99,9 @@ const initialBids = [
 ];
 
 export default function BiddingPage() {
+  const { id } = useParams();
+
+  const socket=useSocket();
   const [product, setProduct] = useState(initialProduct);
   const [bids, setBids] = useState(initialBids);
   const [bidAmount, setBidAmount] = useState(
@@ -104,17 +111,10 @@ export default function BiddingPage() {
   const [showAllBidders, setShowAllBidders] = useState(false);
 
   // In a real app, you would fetch product data and bids from your API
-  useEffect(() => {
-    // Simulating real-time updates
-    const interval = setInterval(() => {
-      // This would be replaced with WebSocket or polling in a real app
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  
 
   useEffect(() => {
-    updateBid(updateBidCallback)
+    updateBid(socket,updateBidCallback)
   }, []);
 
   const handleBidSubmit = (e: React.FormEvent) => {
@@ -125,7 +125,7 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid("67d6c63e30d588907fbabbd7", bidAmount+100000, "67d656626dbdd92427640e2d");
+    placeBid(socket,id, bidAmount+100000, "67d656626dbdd92427640e2d");
     
     // In a real app, you would send this bid to your API
     const newBid = {

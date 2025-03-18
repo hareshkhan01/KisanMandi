@@ -1,19 +1,43 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { io } from "socket.io-client";
-import {config} from "../../../backend/src/config/config.js";
-const socket=io(`http://localhost:${config.port}`);
 
+// Custom Hook for Socket Connection
+export const useSocket = () => {
+    const socket = useMemo(() => io(import.meta.env.VITE_API_URL, {
+        reconnection: true, // Auto-reconnect
+        reconnectionAttempts: 5, // Retry 5 times
+        transports: ['websocket'] // Use WebSocket for better performance
+    }), []);
 
-export const socketConnect=()=>{
-    socket.on("connect", () => {
-        console.log("Connected to server");
-     });
-}
+    useEffect(() => {
+        socket.on("connect", () => {
+            console.log("Connected to server");
+        });
 
-export const placeBid = async (auctionId, bidAmount, userId) => {
-    socket.emit('placeBid', { auctionId, bidAmount, userId });
-}
+        socket.on("connect_error", (err) => {
+            console.error("Connection Error:", err);
+        });
 
+        // return () => {
+        //     socket.disconnect(); // Cleanup on unmount
+        // };
+    }, [socket]);
 
+    return socket;
+};
 
-export default socket
+// Function to place a bid
+export const placeBid = (socket, auctionId, bidAmount, userId) => {
+    if (!socket || !socket.connected) {
+        console.error("Socket not connected!");
+        return;
+    }
+    socket.emit("placeBid", { auctionId, bidAmount, userId });
+};
+
+// Function to listen for bid updates
+export const updateBid = (socket, callback) => {
+    if (!socket) return;
+    socket.off("bidUpdate"); // Remove old listeners
+    socket.on("bidUpdate", callback);
+};
