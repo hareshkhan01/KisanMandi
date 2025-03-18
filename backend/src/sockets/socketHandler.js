@@ -68,8 +68,10 @@ export const setupAuctionHandlers = (io) => {
                   }
               } else {
                   // Push a new bid if the user hasn't bid before
+                  console.log("User: Auction",user)
                   auction.highestBidder.push({
-                      user: userId,
+                      user: user,
+                      userName: user.name,
                       amount: bidAmount,
                       bidTime: new Date()
                   });
