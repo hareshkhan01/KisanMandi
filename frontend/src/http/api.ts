@@ -2,7 +2,7 @@ import axios from 'axios'
 import useTokenStore from './store';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         "Content-Type" :'application/json',
     }
@@ -37,7 +37,7 @@ export const logIn = async (data: { email: string; password: string }) => {
 
 
  
-  export const createAuction = async (data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+  export const createAuction = async (data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number;duration: number }) => {
     try {
       const response = await api.post('/api/auctions/create', data);
       return response.data;
@@ -48,7 +48,7 @@ export const logIn = async (data: { email: string; password: string }) => {
   };
 
  
-  export const updateAuction = async (id: string, data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number }) => {
+  export const updateAuction = async (id: string, data: { product: string;category:string; description: string;quality: string;unit:string;pickupLocation: string ;currentBid: number; quantity: number; duration: number}) => {
     try {
       const response = await api.put(`/api/auctions/update/${id}`, data);
       return response.data;
@@ -61,10 +61,30 @@ export const logIn = async (data: { email: string; password: string }) => {
   export const getAuctions = async () => {
     try {
       const response = await api.get('/api/auctions');
-      // console.log(response.data)
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error('Failed to fetch auctions:', error);
+      throw error;
+    }
+  };
+
+  export const getAuctionById = async (id: string) => {
+    try {
+      const response = await api.get(`/api/auctions/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch auction:', error);
+      throw error;
+    }
+  };
+
+  export const getFarmerById = async (id: string) => {
+    try {
+      const response = await api.get(`/api/users/farmers/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch farmer:', error);
       throw error;
     }
   };

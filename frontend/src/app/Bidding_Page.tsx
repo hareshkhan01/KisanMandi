@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 // import Image from "next/image";
 import {
   Clock,
@@ -22,7 +22,10 @@ import { Progress } from "@/components/ui/progress";
 import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
-import {placeBid} from "@/socket/socket.js";
+import {placeBid,updateBid,useSocket} from "@/socket/socket.js";
+import { useParams } from "react-router-dom";
+import { getAuctionById,getFarmerById } from "@/http/api";
+import useTokenStore from '../http/store';
 
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
@@ -51,6 +54,19 @@ const initialProduct = {
   quality: "Grade A",
   harvestDate: "2023-10-15",
 };
+
+
+// just testing updateBid and its worked but not properly implemented
+
+const updateBidCallback = async (data)=>{
+  console.log("Callback:",data);
+}
+
+
+
+
+
+
 
 const initialBids = [
   {
@@ -84,7 +100,14 @@ const initialBids = [
 ];
 
 export default function BiddingPage() {
+  const { id } = useParams();
+
+  const socket=useSocket();
+
+  const [userId,setUserId] = useState("");
   const [product, setProduct] = useState(initialProduct);
+  const [auction, setAuction] = useState();
+  const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState(initialBids);
   const [bidAmount, setBidAmount] = useState(
     product.currentBid + product.bidIncrement
@@ -93,14 +116,30 @@ export default function BiddingPage() {
   const [showAllBidders, setShowAllBidders] = useState(false);
 
   // In a real app, you would fetch product data and bids from your API
-  useEffect(() => {
-    // Simulating real-time updates
-    const interval = setInterval(() => {
-      // This would be replaced with WebSocket or polling in a real app
-    }, 5000);
+  
 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    // Fethc user id from localstorage
+    const userId = useTokenStore.getState().userId;
+    setUserId(userId);
+    updateBid(socket,updateBidCallback)
   }, []);
+
+  useEffect(() => {
+    const fetchAuction = async () => {
+      try {
+        const response = await getAuctionById(id);
+        setAuction(response);
+        console.log(response)
+        const farmer = await getFarmerById(response.farmer);
+        setFarmer(farmer);
+        console.log(farmer)
+      } catch (error) {
+        console.error("Error fetching auction:", error);
+      }
+    }
+    fetchAuction();
+  },[])
 
   const handleBidSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,7 +149,8 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid(bids.length+1, bidAmount, "user123");
+    placeBid(socket,id, bidAmount+100000, userId);
+    
     // In a real app, you would send this bid to your API
     const newBid = {
       id: bids.length + 1,
@@ -126,6 +166,7 @@ export default function BiddingPage() {
       currentBid: bidAmount,
     });
     setBidAmount(bidAmount + product.bidIncrement);
+
   };
 
   const visibleBids = showAllBidders ? bids : bids.slice(0, 3);
@@ -225,12 +266,12 @@ export default function BiddingPage() {
                         {product.farmer.name}
                       </h3>
                       <p className="text-muted-foreground">
-                        {product.farmer.location}
+                      Riverside County {/* {product.farmer.location} this need to be done later*/}
                       </p>
                       <div className="flex items-center mt-2">
                         <Award className="h-4 w-4 text-yellow-500 mr-1" />
                         <span className="font-medium">
-                          {product.farmer.rating}
+                          4.8 {/* {product.farmer.rating} */}
                         </span>
                         <span className="text-muted-foreground ml-1">
                           /5 Rating

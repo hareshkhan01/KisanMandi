@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { logIn } from "@/http/api.js";
 import useTokenStore from "@/http/store";
 import { useMutation} from '@tanstack/react-query'
+//import { set } from "date-fns";
 
 type LoginModalProps = {
   open: boolean;
@@ -23,6 +24,9 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
   const [password, setPassword] = useState("");
 
   const setToken = useTokenStore((state) => state.setToken);
+  const setRole = useTokenStore((state) => state.setRole);
+  const setName = useTokenStore((state) => state.setName);
+  const setUserId = useTokenStore((state) => state.setUserId);
 
   const mutation = useMutation({
     mutationFn: logIn,
@@ -30,6 +34,9 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
       console.log("login success", res.token);
       //redirect to dashboard
       setToken(res.token);
+      setRole(res.role);
+      setName(res.name);
+      setUserId(res.userId);
     },
   });
 
