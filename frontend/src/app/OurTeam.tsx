@@ -4,51 +4,52 @@ import { Linkedin, Twitter, Github } from "lucide-react";
 const teamData = [
   {
     id: 1,
-    name: "Rahul Sharma",
+    name: "Pratyay Mustafi",
     role: "FrontEnd Developer",
-    description: "Agricultural tech enthusiast with 10+ years in supply chain management",
+    description:
+      "Agricultural tech enthusiast with 10+ years in supply chain management",
     social: {
       linkedin: "#",
       twitter: "#",
-      github: "#"
+      github: "#",
     },
-    image: "/placeholder-avatar.jpg"
+    image: "https://avatars.githubusercontent.com/u/61408566?v=4",
   },
   {
     id: 2,
-    name: "Priya Patel",
+    name: "Debjyoti sarkar",
     role: "BackEnd Developer",
     description: "Full-stack developer specializing in blockchain solutions",
     social: {
       linkedin: "#",
       twitter: "#",
-      github: "#"
+      github: "#",
     },
-    image: "/placeholder-avatar.jpg"
+    image: "/placeholder-avatar.jpg",
   },
   {
     id: 3,
-    name: "Arjun Singh",
+    name: "Sayantan Das",
     role: "FrontEnd Developer",
     description: "Expert in agricultural logistics and quality control",
     social: {
       linkedin: "#",
       twitter: "#",
-      github: "#"
+      github: "#",
     },
-    image: "/placeholder-avatar.jpg"
+    image: "https://avatars.githubusercontent.com/u/92078956?v=4",
   },
   {
     id: 4,
-    name: "Arjun Singh",
+    name: "Haresh Khan",
     role: "BackEnd Developer",
     description: "Expert in agricultural logistics and quality control",
     social: {
       linkedin: "#",
       twitter: "#",
-      github: "#"
+      github: "#",
     },
-    image: "/placeholder-avatar.jpg"
+    image: "/placeholder-avatar.jpg",
   },
 ];
 
@@ -69,7 +70,8 @@ export default function OurTeam() {
           <Card key={member.id} className="p-6 dark:bg-gray-800 dark:border-gray-700">
             <div className="mb-4 rounded-full bg-gray-100 dark:bg-gray-700 h-30 w-30 mx-auto flex items-center justify-center">
               {/* Replace with actual image */}
-              <span className="text-gray-400 dark:text-gray-300 text-4xl">👤</span>
+              {/* <span className="text-gray-400 dark:text-gray-300 text-4xl">👤</span> */}
+              <img src={member.image} alt="" className="h-30 w-30 rounded-full" />
             </div>
             <h3 className="text-xl font-bold text-center mb-2 text-gray-800 dark:text-gray-200">
               {member.name}
