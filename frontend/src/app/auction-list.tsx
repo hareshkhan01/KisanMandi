@@ -15,8 +15,6 @@ interface AuctionItem {
   currentBid: number;
   bidCount: number;
   reserveMet?: boolean;
-  description: string;
-  _id: string;
 }
 
 interface AuctionListProps {
@@ -24,21 +22,16 @@ interface AuctionListProps {
   showManageOptions?: boolean;
 }
 
-export default function AuctionList(
-  {
+export default function AuctionList({
   auctions,
   showManageOptions = false,
-}: AuctionListProps
-)
- {
+}: AuctionListProps) {
   const [auctionList,setAuctionList] = useState([]);
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
         const response = await getAuctions();
-        // response.map((auction) => {
-        //   console.log(auction._id)
-        // })
+        console.log(response)
         setAuctionList(response);
       } catch (error) {
         console.error('Error fetching auctions:', error);
@@ -46,7 +39,6 @@ export default function AuctionList(
     };
     fetchAuctions();
   },[]);
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {auctionList.map((auction) => (
@@ -55,7 +47,7 @@ export default function AuctionList(
             <div className="relative h-48 w-full">
               <img
                 src={auction.image || "img/1.jpg"}
-                alt={auction.description}
+                alt={auction.name}
                 className="w-full h-full object-cover"
               />
             </div>
