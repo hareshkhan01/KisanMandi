@@ -21,6 +21,7 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
   quality: {
     type: String,
     enum:["grade-a","grade-b","grade-c","Certified Organic", "Natural"],
@@ -32,6 +33,21 @@ const auctionSchema = new mongoose.Schema({
     type: String,
     enum:["kg","litre","pounds"],
     default: "kg",
+  },
+
+  harvestDate: {
+    type: String,
+    required: true,
+  },
+
+  startingBid: {
+    type: Number,
+    required: true,
+  },
+
+  minBidIncrement: {
+    type: Number,
+    required: true,    
   },
 
   availibility: {
@@ -56,6 +72,7 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+
   status: {
     type: String,
     enum: ["open", "closed"],
@@ -66,6 +83,11 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+
+  images: [{
+    type: String,
+  }],
+
 //   createdBy: {
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: "User",
