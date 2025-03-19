@@ -210,7 +210,7 @@ export default function BiddingPage() {
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Harvest Date
                       </h4>
-                      <p>{auction?.harvestDate}</p>
+                      <p>{product.harvestDate}</p>
                     </div>
                   </div>
                 </TabsContent>
@@ -227,8 +227,8 @@ export default function BiddingPage() {
                     <div>
                       <h3 className="font-semibold text-lg">{farmer?.name}</h3>
                       <p className="text-muted-foreground">
-                        {/* Riverside County{" "} */}
-                        {auction?.pickupLocation}
+                        Riverside County{" "}
+                        {/* {product.farmer.location} this need to be done later*/}
                       </p>
                       <div className="flex items-center mt-2">
                         <Award className="h-4 w-4 text-yellow-500 mr-1" />
@@ -239,9 +239,9 @@ export default function BiddingPage() {
                           /5 Rating
                         </span>
                       </div>
-                      {/* <Button variant="outline" size="sm" className="mt-3">
+                      <Button variant="outline" size="sm" className="mt-3">
                         View Profile
-                      </Button> */}
+                      </Button>
                     </div>
                   </div>
                 </TabsContent>
@@ -282,7 +282,7 @@ export default function BiddingPage() {
                     {auction?.category}
                   </Badge>
                   <span className="text-muted-foreground text-sm ml-2">
-                    {auction?.quantity + " " + auction?.unit}
+                    {auction?.quantity}
                   </span>
                 </div>
               </div>
@@ -292,7 +292,7 @@ export default function BiddingPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Current Bid</p>
                     <p className="text-3xl font-bold">
-                      ₹{auction?.startingBid.toLocaleString()}
+                      ₹{auction?.currentBid.toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -300,7 +300,7 @@ export default function BiddingPage() {
                       Starting Bid
                     </p>
                     <p className="text-xl">
-                      ₹{auction?.startingBid.toLocaleString()}
+                      ₹{product.minBid.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -320,8 +320,10 @@ export default function BiddingPage() {
                 />
 
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">{bids?.length} bids</span> so
-                  far. Minimum increment: ₹{auction?.minBidIncrement}
+                  <span className="font-medium">
+                    {bids?.length} bids
+                  </span>{" "}
+                  so far. Minimum increment: ₹{product.bidIncrement}
                 </p>
               </div>
 

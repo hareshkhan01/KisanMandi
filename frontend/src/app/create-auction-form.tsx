@@ -148,18 +148,15 @@ export default function CreateAuctionForm() {
       product: data.productName, // mapping productName to product
       category: data.category,
       description: data.description,
-      quantity: Number.parseInt(data.quantity),
-      unit: data.unit,
       quality: data.quality,
-      harvestDate: data.harvestDate.toLocaleDateString(),
-      startingBid: Number.parseInt(data.startingBid),
-      minBidIncrement: Number.parseInt(data.bidIncrement),
-      duration: Number.parseInt(data.auctionDuration, 10),
+      unit: data.unit,
       pickupLocation: data.pickupLocation,
-
+      currentBid: Number.parseInt(data.startingBid),
+      quantity: Number.parseInt(data.quantity),
+      duration: Number.parseInt(data.auctionDuration, 10),
       // You can also include additional fields if needed (e.g., images)
     };
-    console.log(1,auctionPayload);
+    console.log(auctionPayload);
     // Trigger the mutation to create the auction
     mutation.mutate(auctionPayload);
   };
@@ -338,19 +335,19 @@ export default function CreateAuctionForm() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="grade-A">
+                            <SelectItem value="grade-a">
                               Grade A (Premium)
                             </SelectItem>
-                            <SelectItem value="grade-B">
+                            <SelectItem value="grade-b">
                               Grade B (Standard)
                             </SelectItem>
-                            <SelectItem value="grade-C">
+                            <SelectItem value="grade-c">
                               Grade C (Economy)
                             </SelectItem>
-                            <SelectItem value="Certified Organic">
+                            <SelectItem value="organic">
                               Certified Organic
                             </SelectItem>
-                            <SelectItem value="Natural">
+                            <SelectItem value="natural">
                               Natural (No Certification)
                             </SelectItem>
                           </SelectContent>

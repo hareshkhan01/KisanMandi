@@ -1,13 +1,11 @@
 import createHttpError from "http-errors";
 import auctionModel from "../models/auction.js";
-
 async function createAuction(req, res, next) {
-    const { product, startingBid, unit, harverstDate, minBidIncrement, duration, pickupLocation, quantity, quality, description, category } = req.body;
+    const { product, currentBid, quantity, quality, description, category } = req.body;
     
-    if (!product || !startingBid || !quantity) {  
+    if (!product || !currentBid || !quantity) {  
         return next(createHttpError(400, "Product name, quantity, and starting price are required"));
     }
-    console.log(req.body);
 
     try {
         const newAuction = await auctionModel.create({
@@ -73,7 +71,6 @@ const getAuctionById = async (req, res, next) => {
         if (!auction) {
             return next(createHttpError(404, "Auction not found"));
         }
-        console.log(auction)
         res.json(auction);
     } catch (error) {
         next(error);
