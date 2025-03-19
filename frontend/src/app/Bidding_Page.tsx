@@ -72,7 +72,7 @@ export default function BiddingPage() {
   const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState();
   const [bidAmount, setBidAmount] = useState(
-    product.currentBid + product.bidIncrement
+    auction?.currentBid + auction?.bidIncrement
   );
   const [activeImage, setActiveImage] = useState(0);
   const [showAllBidders, setShowAllBidders] = useState(false);
@@ -93,6 +93,8 @@ export default function BiddingPage() {
         const response = await getAuctionById(id);
         setAuction(response);
         setBids(response.highestBidder);
+        setBidAmount(response.currentBid+response.startingBid)
+        console.log(response)
         if (response.farmer) {
           const farmerData = await getFarmerById(response.farmer);
           setFarmer(farmerData);
@@ -204,7 +206,7 @@ export default function BiddingPage() {
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Quantity
                       </h4>
-                      <p>{auction?.quantity}</p>
+                      <p>{auction?.quantity} {auction?.unit.toUpperCase()} </p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
@@ -282,7 +284,7 @@ export default function BiddingPage() {
                     {auction?.category}
                   </Badge>
                   <span className="text-muted-foreground text-sm ml-2">
-                    {auction?.quantity}
+                    {auction?.quantity} {auction?.unit.toUpperCase()}
                   </span>
                 </div>
               </div>
@@ -300,7 +302,7 @@ export default function BiddingPage() {
                       Starting Bid
                     </p>
                     <p className="text-xl">
-                      ₹{product.minBid.toLocaleString()}
+                      ₹{auction?.startingBid.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -315,7 +317,7 @@ export default function BiddingPage() {
                 <CountdownTimer initialTimeInMs={product.timeLeft} />
 
                 <Progress
-                  value={(product.currentBid / (product.minBid * 2)) * 100}
+                  value={(auction?.currentBid / (auction?.minBidIncrement * 2)) * 100}
                   className="h-2"
                 />
 
@@ -323,7 +325,7 @@ export default function BiddingPage() {
                   <span className="font-medium">
                     {bids?.length} bids
                   </span>{" "}
-                  so far. Minimum increment: ₹{product.bidIncrement}
+                  so far. Minimum increment: ₹{auction?.minBidIncrement}
                 </p>
               </div>
 

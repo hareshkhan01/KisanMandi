@@ -1,9 +1,9 @@
 import createHttpError from "http-errors";
 import auctionModel from "../models/auction.js";
 async function createAuction(req, res, next) {
-    const { product, currentBid, quantity, quality, description, category } = req.body;
+    const { product, startingBid, quantity, quality, description, category } = req.body;
     
-    if (!product || !currentBid || !quantity) {  
+    if (!product || !startingBid || !quantity) {  
         return next(createHttpError(400, "Product name, quantity, and starting price are required"));
     }
 

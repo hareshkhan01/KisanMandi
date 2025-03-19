@@ -51,10 +51,17 @@ const auctionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  startingBid:{
+    type: Number,
+    required: true
+  },
   currentBid: {
     type: Number,
     default: 0,
+  },
+  minBidIncremnet:{
+    type: Number,
+    required: true
   },
   status: {
     type: String,
