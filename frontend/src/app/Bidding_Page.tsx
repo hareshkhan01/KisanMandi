@@ -22,10 +22,10 @@ import { Progress } from "@/components/ui/progress";
 import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
-import {placeBid,updateBid,useSocket} from "@/socket/socket.js";
+import { placeBid, updateBid, useSocket } from "@/socket/socket.js";
 import { useParams } from "react-router-dom";
-import { getAuctionById,getFarmerById } from "@/http/api";
-import useTokenStore from '../http/store';
+import { getAuctionById, getFarmerById } from "@/http/api";
+import useTokenStore from "../http/store";
 
 // Mock data - in a real app, this would come from your API/database
 const initialProduct = {
@@ -55,60 +55,22 @@ const initialProduct = {
   harvestDate: "2023-10-15",
 };
 
-
 // just testing updateBid and its worked but not properly implemented
 
-const updateBidCallback = async (data)=>{
-  console.log("Callback:",data);
-}
-
-
-
-
-
-
-
-const initialBids = [
-  {
-    id: 1,
-    vendorName: "Fresh Foods Co.",
-    amount: 1350,
-    time: "10 minutes ago",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 2,
-    vendorName: "Organic Markets",
-    amount: 1300,
-    time: "25 minutes ago",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 3,
-    vendorName: "City Grocers",
-    amount: 1250,
-    time: "45 minutes ago",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 4,
-    vendorName: "Farm to Table Inc.",
-    amount: 1200,
-    time: "1 hour ago",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-];
+const updateBidCallback = async (data) => {
+  console.log("Callback:", data);
+};
 
 export default function BiddingPage() {
   const { id } = useParams();
 
-  const socket=useSocket();
+  const socket = useSocket();
 
-  const [userId,setUserId] = useState("");
+  const [userId, setUserId] = useState("");
   const [product, setProduct] = useState(initialProduct);
   const [auction, setAuction] = useState();
   const [farmer, setFarmer] = useState();
-  const [bids, setBids] = useState(initialBids);
+  const [bids, setBids] = useState();
   const [bidAmount, setBidAmount] = useState(
     product.currentBid + product.bidIncrement
   );
@@ -116,30 +78,36 @@ export default function BiddingPage() {
   const [showAllBidders, setShowAllBidders] = useState(false);
 
   // In a real app, you would fetch product data and bids from your API
-  
+
+  // useEffect(() => {
+
+  // }, []);
 
   useEffect(() => {
     // Fethc user id from localstorage
     const userId = useTokenStore.getState().userId;
     setUserId(userId);
-    updateBid(socket,updateBidCallback)
-  }, []);
-
-  useEffect(() => {
+    updateBid(socket, updateBidCallback);
     const fetchAuction = async () => {
       try {
         const response = await getAuctionById(id);
         setAuction(response);
-        console.log(response)
-        const farmer = await getFarmerById(response.farmer);
-        setFarmer(farmer);
-        console.log(farmer)
+        setBids(response.highestBidder);
+        if (response.farmer) {
+          const farmerData = await getFarmerById(response.farmer);
+          setFarmer(farmerData);
+        }
       } catch (error) {
         console.error("Error fetching auction:", error);
       }
-    }
+    };
+
     fetchAuction();
-  },[])
+  }, []); // Dependency on id
+
+  useEffect(() => {
+    console.log(bids)
+  },[bids]);
 
   const handleBidSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,8 +117,8 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid(socket,id, bidAmount+100000, userId);
-    
+    placeBid(socket, id, bidAmount + 100000, userId);
+
     // In a real app, you would send this bid to your API
     const newBid = {
       id: bids.length + 1,
@@ -166,10 +134,7 @@ export default function BiddingPage() {
       currentBid: bidAmount,
     });
     setBidAmount(bidAmount + product.bidIncrement);
-
   };
-
-  const visibleBids = showAllBidders ? bids : bids.slice(0, 3);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -180,7 +145,7 @@ export default function BiddingPage() {
             <div className="relative h-[300px] md:h-[400px] w-full">
               <img
                 src={product.images[activeImage] || "/placeholder.svg"}
-                alt={product.name}
+                alt={auction?.product}
                 className="object-fill h-fit w-full"
               />
             </div>
@@ -197,7 +162,7 @@ export default function BiddingPage() {
                 >
                   <img
                     src={img || "/placeholder.svg"}
-                    alt={`${product.name} view ${index + 1}`}
+                    alt={`${auction?.product} view ${index + 1}`}
                     className="object-cover rounded h-[100%] w-full"
                   />
                 </div>
@@ -218,7 +183,7 @@ export default function BiddingPage() {
                   <div>
                     <h3 className="font-semibold text-lg">Description</h3>
                     <p className="text-muted-foreground">
-                      {product.description}
+                      {auction?.description}
                     </p>
                   </div>
 
@@ -227,19 +192,19 @@ export default function BiddingPage() {
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Category
                       </h4>
-                      <p>{product.category}</p>
+                      <p>{auction?.category}</p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Quality
                       </h4>
-                      <p>{product.quality}</p>
+                      <p>{auction?.quality}</p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Quantity
                       </h4>
-                      <p>{product.quantity}</p>
+                      <p>{auction?.quantity}</p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
@@ -257,16 +222,13 @@ export default function BiddingPage() {
                         src={product.farmer.image}
                         alt={product.farmer.name}
                       />
-                      <AvatarFallback>
-                        {product.farmer.name.charAt(0)}
-                      </AvatarFallback>
+                      <AvatarFallback>{farmer?.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-semibold text-lg">
-                        {product.farmer.name}
-                      </h3>
+                      <h3 className="font-semibold text-lg">{farmer?.name}</h3>
                       <p className="text-muted-foreground">
-                      Riverside County {/* {product.farmer.location} this need to be done later*/}
+                        Riverside County{" "}
+                        {/* {product.farmer.location} this need to be done later*/}
                       </p>
                       <div className="flex items-center mt-2">
                         <Award className="h-4 w-4 text-yellow-500 mr-1" />
@@ -311,16 +273,16 @@ export default function BiddingPage() {
           <Card>
             <CardContent className="p-6 space-y-6">
               <div>
-                <h1 className="text-2xl font-bold">{product.name}</h1>
+                <h1 className="text-2xl font-bold">{auction?.product}</h1>
                 <div className="flex items-center mt-1">
                   <Badge
                     variant="outline"
                     className="bg-green-50 text-green-700 border-green-200"
                   >
-                    {product.category}
+                    {auction?.category}
                   </Badge>
                   <span className="text-muted-foreground text-sm ml-2">
-                    {product.quantity}
+                    {auction?.quantity}
                   </span>
                 </div>
               </div>
@@ -330,7 +292,7 @@ export default function BiddingPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Current Bid</p>
                     <p className="text-3xl font-bold">
-                      ₹{product.currentBid.toLocaleString()}
+                      ₹{auction?.currentBid.toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -358,8 +320,10 @@ export default function BiddingPage() {
                 />
 
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">{bids.length} bids</span> so
-                  far. Minimum increment: ₹{product.bidIncrement}
+                  <span className="font-medium">
+                    {bids?.length} bids
+                  </span>{" "}
+                  so far. Minimum increment: ₹{product.bidIncrement}
                 </p>
               </div>
 
@@ -425,11 +389,11 @@ export default function BiddingPage() {
                 </Button>
               </div>
 
-              <BidHistory bids={visibleBids} />
+              <BidHistory bids={bids} />
 
-              {!showAllBidders && bids.length > 3 && (
+              {!showAllBidders && bids?.length > 3 && (
                 <p className="text-sm text-center text-muted-foreground mt-3">
-                  + {bids.length - 3} more bidders
+                  + {bids?.length - 3} more bidders
                 </p>
               )}
             </CardContent>

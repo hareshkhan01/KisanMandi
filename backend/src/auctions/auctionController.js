@@ -43,7 +43,6 @@ async function updateAuction(req, res, next) {
             req.body,             
             { new: true }         
         );
-
         if (!updatedAuction) {
             return res.status(404).json({ message: "Auction not found" });
         }
