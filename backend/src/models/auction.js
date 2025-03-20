@@ -1,3 +1,4 @@
+import { duration } from "@mui/material";
 import mongoose from "mongoose";
 
 const auctionSchema = new mongoose.Schema({
@@ -23,7 +24,7 @@ const auctionSchema = new mongoose.Schema({
   },
   quality: {
     type: String,
-    enum:["grade-a","grade-b","grade-c","Certified Organic", "Natural"],
+    enum:["Grade A","Grade B","Grade C","Certified Organic", "Natural"],
     default:"Natural",
     required: true,
   },
@@ -77,10 +78,6 @@ const auctionSchema = new mongoose.Schema({
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true,
-      },
-      userName: {
-        type: String,
         required: true,
       },
       amount: {
