@@ -60,7 +60,7 @@ const auctionSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  minBidIncremnet:{
+  minBidIncrement:{
     type: Number,
     required: true
   },
@@ -97,7 +97,7 @@ const auctionSchema = new mongoose.Schema({
       },
     },
   ],
-});
+},{timestamps: true});
 
 const auctionModel = mongoose.model("Auction", auctionSchema);
 export default auctionModel;
