@@ -6,7 +6,7 @@ async function createAuction(req, res, next) {
     if (!product || !startingBid || !quantity) {  
         return next(createHttpError(400, "Product name, quantity, and starting price are required"));
     }
-
+    console.log(req.body)
     try {
         const newAuction = await auctionModel.create({
             ...req.body,
