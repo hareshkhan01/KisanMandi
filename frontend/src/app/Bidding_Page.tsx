@@ -74,7 +74,6 @@ export default function BiddingPage() {
   const [bidAmount, setBidAmount] = useState(
     auction?.currentBid + auction?.bidIncrement
   );
-  const [timeLeft, setTimeLeft] = useState();
   const [activeImage, setActiveImage] = useState(0);
   const [showAllBidders, setShowAllBidders] = useState(false);
 
@@ -83,14 +82,6 @@ export default function BiddingPage() {
   // useEffect(() => {
 
   // }, []);
-
-  const calculateTimeLeft = (endTime) => {
-    const now = new Date().getTime(); // Current time in milliseconds
-    const endTimeMs = new Date(endTime).getTime(); // Auction end time in milliseconds
-    const difference = endTimeMs - now; // Remaining time in milliseconds
-    console.log("Now: ", now, "End time: ", endTimeMs, "Difference: ", difference);
-    return difference > 0 ? difference : 0;
-  }
 
   useEffect(() => {
     // Fethc user id from localstorage
@@ -114,17 +105,7 @@ export default function BiddingPage() {
     };
 
     fetchAuction();
-  }, []); 
-
-  useEffect(() => {
-    if (auction) {
-      const endTime=new Date(auction.updatedAt);
-      console.log("End time before: ",endTime);
-      endTime.setDate(endTime.getDate() + auction.duration);
-      console.log("End time after: ",endTime);
-      setTimeLeft(calculateTimeLeft(endTime));
-    }
-  }, [auction]);
+  }, []); // Dependency on id
 
   useEffect(() => {
     console.log(bids)
@@ -333,14 +314,7 @@ export default function BiddingPage() {
                   </span>
                 </div>
 
-                {auction&&timeLeft ? (
-                  <CountdownTimer initialTimeInMs={timeLeft} />
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Auction has ended
-                  </p>
-                )
-                }
+                <CountdownTimer initialTimeInMs={product.timeLeft} />
 
                 <Progress
                   value={(auction?.currentBid / (auction?.minBidIncrement * 2)) * 100}
@@ -353,7 +327,6 @@ export default function BiddingPage() {
                   </span>{" "}
                   so far. Minimum increment: ₹{auction?.minBidIncrement}
                 </p>
-
               </div>
 
               <form onSubmit={handleBidSubmit} className="space-y-4">

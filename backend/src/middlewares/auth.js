@@ -13,7 +13,7 @@ const authenticate = (req, res, next) => {
 
     try {
         const isVerified = verify(parsedToken,config.jwtSecret)
-        //  console.log(isVerified.sub);
+         console.log(isVerified.sub);
          req.userId = isVerified.sub ;
         next()
     
