@@ -1,7 +1,7 @@
 // serever side socket logic
 
 import Auction from '../models/auction.js';
-import User from '../models/user.js';
+
 
 export const setupAuctionHandlers = (io) => {
   io.on('connection', (socket) => {
@@ -10,27 +10,20 @@ export const setupAuctionHandlers = (io) => {
     socket.on('placeBid', async ({ auctionId, bidAmount, userId }) => {
       console.log('Bid placed:', { auctionId, bidAmount, userId });
       try {
-        // 1. Fetch auction from MongoDBc
-
+        // 1. Fetch auction from MongoDB
         const auction = await Auction.findById(auctionId);
-        const user = await User.findById(userId);
         
         if (!auction) {
-          console.log("Auction Not found")
           return socket.emit('bidError', 'Auction not found');
         }
 
         // 2. Validate auction status
         if (auction.status !== 'open') {
-          console.log("Not valid")
           return socket.emit('bidError', 'Auction has closed');
         }
 
-        socket.join(auctionId);
-
         // 3. Validate bid amount
         if (bidAmount <= auction.currentBid) {
-          console.log("Bid amount must be greater.")
           return socket.emit('bidError', 
             `Bid must be higher than current $${auction.currentBid}`);
         }
@@ -40,16 +33,11 @@ export const setupAuctionHandlers = (io) => {
         const updateBid = async (auctionId, bidAmount, userId) => {
           try {
               // Fetch the auction
-              
-              // console.log(auction)
+              const auction = await Auction.findById(auctionId);
               if (!auction) {
                   throw new Error("Auction not found");
               }
       
-              if (!auction.duration || !auction.pickupLocation || !auction.description ||
-                !auction.category || !auction.product) {
-                throw new Error("Auction is missing required fields.");
-            }
               // Find existing bid by the same user
               const existingBid = auction.highestBidder.find(bid => bid.user.toString() === userId);
       
@@ -64,8 +52,7 @@ export const setupAuctionHandlers = (io) => {
               } else {
                   // Push a new bid if the user hasn't bid before
                   auction.highestBidder.push({
-                      user: user._id,
-                      userName: user.name,
+                      user: userId,
                       amount: bidAmount,
                       bidTime: new Date()
                   });
@@ -91,7 +78,6 @@ export const setupAuctionHandlers = (io) => {
 
         const updatedAuction = await updateBid(auctionId, bidAmount, userId);      
         
-        // console.log(updatedAuction)
 
         // 5. Broadcast to all room participants
         io.to(auctionId).emit('bidUpdate', {
