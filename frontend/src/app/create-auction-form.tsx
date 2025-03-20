@@ -8,7 +8,7 @@ import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { format } from "date-fns"
+import { format, min } from "date-fns"
 import { CalendarIcon, Upload, X, Info, HelpCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -151,7 +151,8 @@ export default function CreateAuctionForm() {
       quality: data.quality,
       unit: data.unit,
       pickupLocation: data.pickupLocation,
-      currentBid: Number.parseInt(data.startingBid),
+      startingBid: Number.parseInt(data.startingBid),
+      minBidIncrement: Number.parseInt(data.bidIncrement),
       quantity: Number.parseInt(data.quantity),
       duration: Number.parseInt(data.auctionDuration, 10),
       // You can also include additional fields if needed (e.g., images)

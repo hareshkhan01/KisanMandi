@@ -52,10 +52,17 @@ const auctionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  startingBid:{
+    type: Number,
+    required: true
+  },
   currentBid: {
     type: Number,
     default: 0,
+  },
+  minBidIncrement:{
+    type: Number,
+    required: true
   },
   status: {
     type: String,
@@ -90,7 +97,7 @@ const auctionSchema = new mongoose.Schema({
       },
     },
   ],
-});
+},{timestamps: true});
 
 const auctionModel = mongoose.model("Auction", auctionSchema);
 export default auctionModel;
