@@ -151,6 +151,7 @@ export default function CreateAuctionForm() {
       quality: data.quality,
       unit: data.unit,
       pickupLocation: data.pickupLocation,
+      harvestDate: data.harvestDate.toLocaleDateString(),
       startingBid: Number.parseInt(data.startingBid),
       minBidIncrement: Number.parseInt(data.bidIncrement),
       quantity: Number.parseInt(data.quantity),
@@ -345,10 +346,10 @@ export default function CreateAuctionForm() {
                             <SelectItem value="grade-c">
                               Grade C (Economy)
                             </SelectItem>
-                            <SelectItem value="organic">
+                            <SelectItem value="Organic">
                               Certified Organic
                             </SelectItem>
-                            <SelectItem value="natural">
+                            <SelectItem value="Natural">
                               Natural (No Certification)
                             </SelectItem>
                           </SelectContent>
