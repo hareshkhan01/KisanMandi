@@ -72,8 +72,9 @@ export default function BiddingPage() {
   const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState();
   const [bidAmount, setBidAmount] = useState(
-    product.currentBid + product.bidIncrement
+    auction?.currentBid + auction?.bidIncrement
   );
+  const [timeLeft, setTimeLeft] = useState();
   const [activeImage, setActiveImage] = useState(0);
   const [showAllBidders, setShowAllBidders] = useState(false);
 
@@ -82,6 +83,14 @@ export default function BiddingPage() {
   // useEffect(() => {
 
   // }, []);
+
+  const calculateTimeLeft = (endTime) => {
+    const now = new Date().getTime(); // Current time in milliseconds
+    const endTimeMs = new Date(endTime).getTime(); // Auction end time in milliseconds
+    const difference = endTimeMs - now; // Remaining time in milliseconds
+    console.log("Now: ", now, "End time: ", endTimeMs, "Difference: ", difference);
+    return difference > 0 ? difference : 0;
+  }
 
   useEffect(() => {
     // Fethc user id from localstorage
@@ -93,6 +102,8 @@ export default function BiddingPage() {
         const response = await getAuctionById(id);
         setAuction(response);
         setBids(response.highestBidder);
+        setBidAmount(response.currentBid+response.startingBid)
+        console.log(response)
         if (response.farmer) {
           const farmerData = await getFarmerById(response.farmer);
           setFarmer(farmerData);
@@ -103,7 +114,17 @@ export default function BiddingPage() {
     };
 
     fetchAuction();
-  }, []); // Dependency on id
+  }, []); 
+
+  useEffect(() => {
+    if (auction) {
+      const endTime=new Date(auction.updatedAt);
+      console.log("End time before: ",endTime);
+      endTime.setDate(endTime.getDate() + auction.duration);
+      console.log("End time after: ",endTime);
+      setTimeLeft(calculateTimeLeft(endTime));
+    }
+  }, [auction]);
 
   useEffect(() => {
     console.log(bids)
@@ -204,7 +225,7 @@ export default function BiddingPage() {
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Quantity
                       </h4>
-                      <p>{auction?.quantity}</p>
+                      <p>{auction?.quantity} {auction?.unit.toUpperCase()} </p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
@@ -282,7 +303,7 @@ export default function BiddingPage() {
                     {auction?.category}
                   </Badge>
                   <span className="text-muted-foreground text-sm ml-2">
-                    {auction?.quantity}
+                    {auction?.quantity} {auction?.unit.toUpperCase()}
                   </span>
                 </div>
               </div>
@@ -300,7 +321,7 @@ export default function BiddingPage() {
                       Starting Bid
                     </p>
                     <p className="text-xl">
-                      ₹{product.minBid.toLocaleString()}
+                      ₹{auction?.startingBid.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -312,10 +333,17 @@ export default function BiddingPage() {
                   </span>
                 </div>
 
-                <CountdownTimer initialTimeInMs={product.timeLeft} />
+                {auction&&timeLeft ? (
+                  <CountdownTimer initialTimeInMs={timeLeft} />
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Auction has ended
+                  </p>
+                )
+                }
 
                 <Progress
-                  value={(product.currentBid / (product.minBid * 2)) * 100}
+                  value={(auction?.currentBid / (auction?.minBidIncrement * 2)) * 100}
                   className="h-2"
                 />
 
@@ -323,8 +351,9 @@ export default function BiddingPage() {
                   <span className="font-medium">
                     {bids?.length} bids
                   </span>{" "}
-                  so far. Minimum increment: ₹{product.bidIncrement}
+                  so far. Minimum increment: ₹{auction?.minBidIncrement}
                 </p>
+
               </div>
 
               <form onSubmit={handleBidSubmit} className="space-y-4">
