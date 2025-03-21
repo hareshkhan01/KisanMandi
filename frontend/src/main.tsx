@@ -13,6 +13,7 @@ import AuctionDashboard from "./app/auction-dashboard.js";
 import './index.css'
 import AboutUs from './app/AboutUs.js';
 import ContactUs from './app/Contactus.js';
+import ImageUploader from './app/ImageUploader.js';
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "create-auction",
         element: <CreateAuctionForm />,
+      },
+      {
+        path: "image",
+        element: <ImageUploader />,
       },
       {
         path: "auctionlist",

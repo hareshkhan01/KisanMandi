@@ -13,6 +13,7 @@ async function createAuction(req, res, next) {
     quality,
     description,
     category,
+    images
   } = req.body;
 
   if (!product || !startingBid || !quantity) {

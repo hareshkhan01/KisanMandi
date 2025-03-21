@@ -44,9 +44,9 @@ export default function AuctionList({
       {auctionList.map((auction) => (
         <Card key={auction._id} className="overflow-hidden p-0">
           <div className="relative">
-            <div className="relative h-full w-full">
+            <div className="relative h-72 w-full">
               <img
-                src={auction.image || "img/1.jpg"}
+                src={auction.images[0] || "img/1.jpg"}
                 alt={auction.description}
                 className="w-full h-full object-cover"
               />

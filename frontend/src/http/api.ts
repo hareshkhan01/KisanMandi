@@ -52,6 +52,7 @@ export const createAuction = async (data: {
   minBidIncrement: number;
   quantity: number;
   duration: number;
+  images: string[];
 }) => {
   try {
     const response = await api.post("/api/auctions/create", data);
