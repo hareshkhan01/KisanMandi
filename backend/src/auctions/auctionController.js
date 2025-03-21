@@ -44,7 +44,7 @@ async function createAuction(req, res, next) {
 
 async function getAuctions(req, res, next) {
   try {
-    const auctions = await auctionModel.find();
+    const auctions = await auctionModel.find().populate({path: 'farmer', select: 'name'});
     console.log(auctions);
     res.json(auctions);
   } catch (error) {

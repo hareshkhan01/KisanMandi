@@ -42,12 +42,12 @@ export default function AuctionList({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {auctionList.map((auction) => (
-        <Card key={auction._id} className="overflow-hidden">
+        <Card key={auction._id} className="overflow-hidden p-0">
           <div className="relative">
-            <div className="relative h-48 w-full">
+            <div className="relative h-full w-full">
               <img
                 src={auction.image || "img/1.jpg"}
-                alt={auction.name}
+                alt={auction.description}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -68,10 +68,10 @@ export default function AuctionList({
             )}
           </div>
 
-          <CardContent className="p-4">
+          <CardContent className="p-4 pt-0">
             <div className="mb-2">
-              <h3 className="font-semibold text-lg line-clamp-1">
-                {auction.name}
+              <h3 className="font-semibold text-2xl line-clamp-1">
+                {auction.product}
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-1">
                 by {auction.farmer.name}
@@ -89,7 +89,7 @@ export default function AuctionList({
                 <p className="text-sm text-muted-foreground">Bids</p>
                 <p className="flex items-center">
                   <Users className="h-4 w-4 mr-1" />
-                  {auction.bidCount}
+                  {auction.highestBidder.length}
                 </p>
               </div>
             </div>
