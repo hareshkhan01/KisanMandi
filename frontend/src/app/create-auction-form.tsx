@@ -27,6 +27,8 @@ import { cn } from "@/lib/utils"
 
 import { createAuction } from "@/http/api"
 import { useMutation} from '@tanstack/react-query'
+import axios, { AxiosResponse } from "axios";
+
 
 // Form schema validation
 const formSchema = z.object({
@@ -51,6 +53,9 @@ const formSchema = z.object({
   }),
 })
 
+const cloudName: string = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Replace with actual Cloudinary cloud name
+const uploadPreset: string = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; // Replace with your Cloudinary upload preset if applicable
+
 type FormValues = z.infer<typeof formSchema>
 
 export default function CreateAuctionForm() {
@@ -58,6 +63,8 @@ export default function CreateAuctionForm() {
   const [images, setImages] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [activeTab, setActiveTab] = useState("product-details")
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
 
   // Initialize form with default values
   const form = useForm<FormValues>({
@@ -83,6 +90,52 @@ export default function CreateAuctionForm() {
   // Watch for shipping available to conditionally show shipping details
   const shippingAvailable = form.watch("shippingAvailable")
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        setSelectedFiles([...selectedFiles, ...Array.from(e.target.files)]);
+      }
+    };
+
+      const handleUpload = async () => {
+        if (selectedFiles.length === 0) {
+          alert("Please select files to upload.");
+          return;
+        }
+
+        console.log(cloudName);
+
+        setUploading(true);
+        const uploadedImages: string[] = [];
+
+        for (const file of selectedFiles) {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", uploadPreset); // Required for unsigned uploads
+
+          try {
+            const response: AxiosResponse<{ secure_url: string }> =
+              await axios.post(
+                `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+
+            uploadedImages.push(response.data.secure_url); // Save the image URL
+            const img = [...uploadedUrls, response.data.secure_url];
+            setUploadedUrls(img);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
+        }
+
+        console.log(22,uploadedImages);
+        // setUploadedUrls(uploadedImages);
+        console.log(23,uploadedUrls);
+        setUploading(false);
+      };
+
   // Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return
@@ -91,10 +144,14 @@ export default function CreateAuctionForm() {
 
     // In a real app, you would upload these to your storage service
     // For this demo, we'll create local URLs
-    const newImages = Array.from(e.target.files).map((file) => URL.createObjectURL(file))
+    // const newImages = Array.from(e.target.files).map((file) => URL.createObjectURL(file))
+    if (e.target.files) {
+      setSelectedFiles([...selectedFiles, ...Array.from(e.target.files)]);
+    }
+    console.log(selectedFiles)
 
     // Limit to 4 images
-    setImages((prev) => [...prev, ...newImages].slice(0, 4))
+    // setImages((prev) => [...prev, ...newImages].slice(0, 4))
     setUploading(false)
   }
 
@@ -142,7 +199,9 @@ export default function CreateAuctionForm() {
   //   setImages([])
   // }
   // Handle form submission
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
+    await handleUpload();
+
     // Map form values to the payload structure expected by your API
     const auctionPayload = {
       product: data.productName, // mapping productName to product
@@ -151,12 +210,15 @@ export default function CreateAuctionForm() {
       quality: data.quality,
       unit: data.unit,
       pickupLocation: data.pickupLocation,
+      harvestDate: data.harvestDate.toLocaleDateString(),
       startingBid: Number.parseInt(data.startingBid),
       minBidIncrement: Number.parseInt(data.bidIncrement),
       quantity: Number.parseInt(data.quantity),
       duration: Number.parseInt(data.auctionDuration, 10),
+      images: uploadedUrls,
       // You can also include additional fields if needed (e.g., images)
     };
+    
     console.log(auctionPayload);
     // Trigger the mutation to create the auction
     mutation.mutate(auctionPayload);
@@ -345,10 +407,10 @@ export default function CreateAuctionForm() {
                             <SelectItem value="grade-c">
                               Grade C (Economy)
                             </SelectItem>
-                            <SelectItem value="organic">
+                            <SelectItem value="Organic">
                               Certified Organic
                             </SelectItem>
-                            <SelectItem value="natural">
+                            <SelectItem value="Natural">
                               Natural (No Certification)
                             </SelectItem>
                           </SelectContent>
