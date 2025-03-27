@@ -130,14 +130,23 @@ export default function BiddingPage() {
   }, []);
 
   useEffect(() => {
-    if (auction) {
+  if (auction) {
+    const updateTimer = () => {
       const endTime = new Date(auction.updatedAt);
       console.log("End time before: ", endTime);
       endTime.setDate(endTime.getDate(endTime) + auction.duration);
       console.log("End time after: ", endTime);
       setTimeLeft(calculateTimeLeft(endTime));
-    }
-  }, [auction]);
+    };
+
+    updateTimer(); // Initial call
+
+    const interval = setInterval(updateTimer, 5000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }
+}, [auction]);
+
 
   useEffect(() => {
     updateBid(socket, updateBidCallback);
