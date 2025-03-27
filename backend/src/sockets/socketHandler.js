@@ -24,6 +24,9 @@ export const setupAuctionHandlers = (io) => {
         if (!user) {
           return socket.emit("bidError", "User not found");
         }
+        if (user.role === "farmer") {
+          return socket.emit("bidError", "Farmer cannot bid");
+        }
         // 2. Validate auction status
         if (auction.status !== "open") {
           return socket.emit("bidError", "Auction has closed");

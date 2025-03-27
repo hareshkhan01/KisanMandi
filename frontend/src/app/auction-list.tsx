@@ -130,7 +130,7 @@ export default function AuctionList({
               <div className="grid grid-cols-2 gap-2">
                 <Button variant="outline" size="sm">
                   <a
-                    href={`/auctions/${auction.id}`}
+                    href={`/auctions/${auction._id}`}
                     className="flex items-center"
                   >
                     <Eye className="h-4 w-4 mr-1" /> View
@@ -138,7 +138,7 @@ export default function AuctionList({
                 </Button>
                 <Button variant="outline" size="sm">
                   <a
-                    href={`/auctions/${auction.id}/stats`}
+                    href={`/auctions/${auction._id}/stats`}
                     className="flex items-center"
                   >
                     <BarChart2 className="h-4 w-4 mr-1" /> Stats

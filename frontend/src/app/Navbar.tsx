@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import LoginModal from "@/components/login-modal";
+import useTokenStore from "@/http/store";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // Check auth status on initial load
   useEffect(() => {
     const user = localStorage.getItem("user-store");
@@ -22,7 +22,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user-store");
+    useTokenStore.getState().reset();
     setIsLoggedIn(false);
   };
 
@@ -64,7 +64,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex items-center gap-2" >
+            <div className="flex items-center gap-2">
               <NavLink to="/">Home</NavLink>
               <NavLink to="/auctionlist">Marketplace</NavLink>
               <NavLink to="/products">Farm Products</NavLink>
@@ -77,7 +77,13 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">
-                    Welcome, {localStorage.getItem("user")}
+                    <div>
+                      Welcome,{" "}
+                      {(typeof window !== "undefined" &&
+                        JSON.parse(localStorage.getItem("user-store") || "{}")
+                          ?.state?.name) ||
+                        "Guest"}
+                    </div>
                   </span>
                   <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout
@@ -106,11 +112,12 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[350px]">
                 <div className="flex flex-col h-full py-6">
                   <div className="flex flex-col gap-4">
-                    <NavLink to="/market">Market Prices</NavLink>
+                    <NavLink to="/">Home</NavLink>
+                    <NavLink to="/auctionlist">Marketplace</NavLink>
                     <NavLink to="/products">Farm Products</NavLink>
-                    <NavLink to="/services">Services</NavLink>
-                    <NavLink to="/about">About Us</NavLink>
-                    <NavLink to="/contact">Contact</NavLink>
+                    {/* <NavLink to="/services">Services</NavLink> */}
+                    <NavLink to="/aboutus">About Us</NavLink>
+                    <NavLink to="/contactus">Contact</NavLink>
                   </div>
                   <div className="mt-auto pt-6">
                     <ModeToggle />

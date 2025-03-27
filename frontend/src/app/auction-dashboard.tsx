@@ -102,6 +102,7 @@ export default function AuctionDashboard() {
 
   let count = 0;
 
+
   useEffect(() => {
 
     console.log(++count, searchQuery)
@@ -137,6 +138,7 @@ export default function AuctionDashboard() {
 // console.log(39,sortAuctions(filteredAllAuctions))
   // const filteredAllAuctions = sortAuctions(filterAuctions(auctionList));
   const filteredMyAuctions = sortAuctions(filterAuctions(auctionList));
+
 
   return (
     <div className="container mx-auto px-4 py-8">
