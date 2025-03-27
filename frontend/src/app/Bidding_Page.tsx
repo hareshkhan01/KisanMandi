@@ -154,7 +154,7 @@ export default function BiddingPage() {
 
     // In a real app, you would send this bid to your API
 
-    setBidAmount(bidAmount + product.bidIncrement);
+    setBidAmount(bidAmount + auction?.minBidIncrement);
   };
 
   return (
