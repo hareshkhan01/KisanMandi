@@ -111,4 +111,13 @@ const updateAuctionStatus = async (req, res, next) => {
   }
 };
 
-export { createAuction, updateAuction, getAuctions, isOwner, getAuctionById };
+
+const getMyAuctions = async (req, res, next) => {
+  try {
+    const auctions = await auctionModel.find({ farmer: req.userId });
+    res.json(auctions);
+  } catch (error) {
+    next(error);
+  }
+}
+export { createAuction, updateAuction, getAuctions, isOwner, getAuctionById, updateAuctionStatus, getMyAuctions };
