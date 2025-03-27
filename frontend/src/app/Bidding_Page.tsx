@@ -113,7 +113,8 @@ export default function BiddingPage() {
         setBids(response.highestBidder);
         setCurrentBid(response.currentBid);
         setBidAmount(response.minBidIncrement + response.startingBid);
-        console.log(response);
+        // setProduct(response);
+        // console.log(product);
         if (response.farmer) {
           const farmerData = await getFarmerById(response.farmer);
           setFarmer(farmerData);
@@ -152,7 +153,7 @@ export default function BiddingPage() {
 
     // In a real app, you would send this bid to your API
 
-    setBidAmount(bidAmount + product.bidIncrement);
+    setBidAmount(bidAmount + auction?.minBidIncrement);
   };
 
   return (
@@ -163,13 +164,13 @@ export default function BiddingPage() {
           <div className=" rounded-xl shadow-sm overflow-hidden">
             <div className="relative h-[300px] md:h-[400px] w-full">
               <img
-                src={product.images[activeImage] || "/placeholder.svg"}
+                src={auction?.images[activeImage] || "/placeholder.svg"}
                 alt={auction?.product}
                 className="object-fill h-fit w-full"
               />
             </div>
             <div className="p-4 flex gap-2 overflow-x-auto">
-              {product.images.map((img, index) => (
+              {auction?.images.map((img, index) => (
                 <div
                   key={index}
                   className={`relative h-20 w-20 flex-shrink-0 cursor-pointer border-2 rounded ${
