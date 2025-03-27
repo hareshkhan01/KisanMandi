@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import LoginModal from "@/components/login-modal";
+import useTokenStore from "@/http/store";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +22,8 @@ export default function Navbar() {
     setIsLoginModalOpen(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user-store");
+  const handleLogout = () => { 
+    useTokenStore.getState().reset();
     setIsLoggedIn(false);
   };
 
