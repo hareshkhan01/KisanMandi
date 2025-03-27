@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { updateAuction, updateStatus } from "../http/api";
 
 import { useState, useEffect, useRef } from "react";
 // import Image from "next/image";
@@ -23,7 +24,7 @@ import BidHistory from "@/app/bid-history";
 import CountdownTimer from "@/app/countdown-timer";
 
 import { placeBid, updateBid, useSocket } from "@/socket/socket.js";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { getAuctionById, getFarmerById } from "@/http/api";
 import useTokenStore from "../http/store";
 
@@ -87,8 +88,11 @@ export default function BiddingPage() {
 
   const calculateTimeLeft = (endTime) => {
     const now = new Date().getTime(); // Current time in milliseconds
-    const endTimeMs = new Date(endTime).getTime(); // Auction end time in milliseconds
+    const endTimeMs = new Date().getTime(); // Auction end time in milliseconds
     const difference = endTimeMs - now; // Remaining time in milliseconds
+    if (difference <= 0 && auction?.status === "open") {
+      updateStatus(id);
+    }
     console.log(
       "Now: ",
       now,
@@ -99,8 +103,6 @@ export default function BiddingPage() {
     );
     return difference > 0 ? difference : 0;
   };
-
-  
 
   useEffect(() => {
     // Fethc user id from localstorage
@@ -131,7 +133,7 @@ export default function BiddingPage() {
     if (auction) {
       const endTime = new Date(auction.updatedAt);
       console.log("End time before: ", endTime);
-      endTime.setDate(endTime.getDate() + auction.duration);
+      endTime.setDate(endTime.getDate(endTime) + auction.duration);
       console.log("End time after: ", endTime);
       setTimeLeft(calculateTimeLeft(endTime));
     }
@@ -334,7 +336,7 @@ export default function BiddingPage() {
                   </span>
                 </div>
 
-                {auction && timeLeft ? (
+                {auction && timeLeft && auction?.status === "open" ? (
                   <CountdownTimer initialTimeInMs={timeLeft} />
                 ) : (
                   <p className="text-sm text-muted-foreground">

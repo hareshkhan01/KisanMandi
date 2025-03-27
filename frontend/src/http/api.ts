@@ -116,3 +116,13 @@ export const getFarmerById = async (id: string) => {
     throw error;
   }
 };
+
+export const updateStatus = async (id: string) => {
+  try {
+    const response = await api.put(`/api/auctions/updatestatus/${id}`,{status:"closed"});
+    return response.data;
+  } catch (error) {
+    console.error("Failed to update status:", error);
+    throw error;
+  }
+};

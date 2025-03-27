@@ -97,4 +97,18 @@ const getAuctionById = async (req, res, next) => {
   }
 };
 
+const updateAuctionStatus = async (req, res, next) => {
+  try {
+    const auction = await auctionModel.findById(req.params.id);
+    if (!auction) {
+      return next(createHttpError(404, "Auction not found"));
+    }
+    auction.status = req.body.status;
+    await auction.save();
+    res.json(auction);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export { createAuction, updateAuction, getAuctions, isOwner, getAuctionById };
