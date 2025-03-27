@@ -27,7 +27,6 @@ export default function AuctionList({
   auctions,
   showManageOptions = false,
 }: AuctionListProps) {
-  const [auctionList,setAuctionList] = useState([]);
   const role = useTokenStore((state) => state.role);
   console.log(role)
   // useEffect(() => {

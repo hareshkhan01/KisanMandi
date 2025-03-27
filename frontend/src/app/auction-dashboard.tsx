@@ -137,7 +137,7 @@ export default function AuctionDashboard() {
 // console.log(10, auctionList);
 // console.log(39,sortAuctions(filteredAllAuctions))
   // const filteredAllAuctions = sortAuctions(filterAuctions(auctionList));
-  const filteredMyAuctions = sortAuctions(filterAuctions(auctionList));
+  //const filteredMyAuctions = sortAuctions(filterAuctions(auctionList));
 
 
   return (
