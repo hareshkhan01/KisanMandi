@@ -121,10 +121,10 @@ export default function CreateAuctionForm() {
                   headers: { "Content-Type": "multipart/form-data" },
                 }
               );
-
+              console.log(response.data);
             uploadedImages.push(response.data.secure_url); // Save the image URL
-            const img = [...uploadedUrls, response.data.secure_url];
-            setUploadedUrls(img);
+            // const img = [...uploadedUrls, response.data.secure_url];
+            setUploadedUrls(uploadedUrls);
           } catch (error) {
             console.error("Error uploading image:", error);
           }
@@ -134,6 +134,7 @@ export default function CreateAuctionForm() {
         // setUploadedUrls(uploadedImages);
         console.log(23,uploadedUrls);
         setUploading(false);
+        return uploadedImages;
       };
 
   // Handle image upload
@@ -167,8 +168,8 @@ export default function CreateAuctionForm() {
       console.log("Auction created successfully:", data);
       alert("Auction created successfully! Redirecting to your listings...");
       // Optionally reset the form and images, and perform any redirection
-      // form.reset();
-      // setImages([]);
+      form.reset();
+      setImages([]);
       // router.push('/farmer/listings'); // Uncomment if using a router
     },
     onError: (error) => {
@@ -200,7 +201,8 @@ export default function CreateAuctionForm() {
   // }
   // Handle form submission
   const onSubmit = async (data: FormValues) => {
-    await handleUpload();
+    const urls = await handleUpload();
+    console.log(11, urls);
 
     // Map form values to the payload structure expected by your API
     const auctionPayload = {
@@ -215,13 +217,16 @@ export default function CreateAuctionForm() {
       minBidIncrement: Number.parseInt(data.bidIncrement),
       quantity: Number.parseInt(data.quantity),
       duration: Number.parseInt(data.auctionDuration, 10),
-      images: uploadedUrls,
+      images: urls,
       // You can also include additional fields if needed (e.g., images)
     };
-    
+
     console.log(auctionPayload);
     // Trigger the mutation to create the auction
     mutation.mutate(auctionPayload);
+
+      form.reset()
+      setImages([])
   };
 
   // Move to next tab
