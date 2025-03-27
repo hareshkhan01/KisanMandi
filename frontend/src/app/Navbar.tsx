@@ -9,7 +9,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // Check auth status on initial load
   useEffect(() => {
     const user = localStorage.getItem("user-store");
@@ -22,10 +21,9 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user-store");
     setIsLoggedIn(false);
-  };
-
+    localStorage.removeItem("user-store");
+  };  
   const NavLink = ({
     to,
     children,
@@ -77,7 +75,7 @@ export default function Navbar() {
               {isLoggedIn ? (
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold">
-                    Welcome, {localStorage.getItem("user")}
+                    <div>Welcome, {(typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user-store') || '{}')?.state?.name) || 'Guest'}</div>
                   </span>
                   <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout

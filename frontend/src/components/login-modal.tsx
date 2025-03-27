@@ -37,6 +37,8 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
       setRole(res.role);
       setName(res.name);
       setUserId(res.userId);
+      // auto reload the page after login
+      window.location.href = "/";
     },
   });
 
@@ -47,8 +49,6 @@ export default function LoginModal({ open, onOpenChange }: LoginModalProps) {
       return alert("Please enter email and password");
     }
     mutation.mutate({ email: username, password });
-    // localStorage.setItem("user", username);
-    // window.location.reload();
     console.log("Logging in with", { username, password });
     // Close the modal after login
     onOpenChange(false);
