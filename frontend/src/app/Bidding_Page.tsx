@@ -68,9 +68,7 @@ export default function BiddingPage() {
   const [currentBid, setCurrentBid] = useState();
   const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState();
-  const [bidAmount, setBidAmount] = useState(
-    auction?.currentBid + auction?.bidIncrement
-  );
+  const [bidAmount, setBidAmount] = useState();
   const [timeLeft, setTimeLeft] = useState();
   const [activeImage, setActiveImage] = useState(0);
   const [showAllBidders, setShowAllBidders] = useState(false);
