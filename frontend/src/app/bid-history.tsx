@@ -43,14 +43,14 @@ export default function BidHistory({ bids }: BidHistoryProps) {
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
               <AvatarImage src={avatar} alt={bid.userName} />
-              <AvatarFallback>{bid.userName.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{bid?.userName?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-medium">{bid.userName}</p>
-              <p className="text-xs text-muted-foreground">{bid.bidTime}</p>
+              <p className="text-sm font-medium">{bid?.userName}</p>
+              <p className="text-xs text-muted-foreground">{bid?.bidTime}</p>
             </div>
           </div>
-          <p className="font-semibold">₹{bid.amount.toLocaleString()}</p>
+          <p className="font-semibold">₹{bid?.amount.toLocaleString()}</p>
         </div>
       ))}
 

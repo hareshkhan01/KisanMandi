@@ -2,26 +2,30 @@ import { useEffect, useMemo } from "react";
 import { io } from "socket.io-client";
 
 // Custom Hook for Socket Connection
-export const useSocket = () => {
+export const useSocket = (auctionId) => {
     const socket = useMemo(() => io(import.meta.env.VITE_API_URL, {
-        reconnection: true, // Auto-reconnect
-        reconnectionAttempts: 5, // Retry 5 times
-        transports: ['websocket'] // Use WebSocket for better performance
+        reconnection: true,
+        reconnectionAttempts: 5,
+        transports: ["websocket"],
     }), []);
 
     useEffect(() => {
         socket.on("connect", () => {
             console.log("Connected to server");
+            if (auctionId) {
+                socket.emit("joinAuction", auctionId);
+                console.log(`Joined auction room: ${auctionId}`);
+            }
         });
 
         socket.on("connect_error", (err) => {
             console.error("Connection Error:", err);
         });
 
-        // return () => {
-        //     socket.disconnect(); // Cleanup on unmount
-        // };
-    }, [socket]);
+        return () => {
+            // socket.disconnect();
+        };
+    }, [socket, auctionId]);
 
     return socket;
 };
@@ -37,7 +41,11 @@ export const placeBid = (socket, auctionId, bidAmount, userId) => {
 
 // Function to listen for bid updates
 export const updateBid = (socket, callback) => {
-    if (!socket) return;
-    socket.off("bidUpdate"); // Remove old listeners
-    socket.on("bidUpdate", callback);
+    console.log("Listening for bid updates...");
+
+    socket.on("bidUpdate", (data) => {
+        console.log("Received bid update:", data);
+        callback(data);
+    });
 };
+

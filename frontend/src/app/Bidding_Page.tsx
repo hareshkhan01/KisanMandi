@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useRef } from "react";
 // import Image from "next/image";
 import {
   Clock,
@@ -57,18 +57,15 @@ const initialProduct = {
 
 // just testing updateBid and its worked but not properly implemented
 
-const updateBidCallback = async (data) => {
-  console.log("Callback:", data);
-};
-
 export default function BiddingPage() {
   const { id } = useParams();
 
-  const socket = useSocket();
+  const socket = useSocket(id);
 
   const [userId, setUserId] = useState("");
   const [product, setProduct] = useState(initialProduct);
   const [auction, setAuction] = useState();
+  const [currentBid, setCurrentBid] = useState();
   const [farmer, setFarmer] = useState();
   const [bids, setBids] = useState();
   const [bidAmount, setBidAmount] = useState(
@@ -84,26 +81,41 @@ export default function BiddingPage() {
 
   // }, []);
 
+  const updateBidCallback = async (data) => {
+    console.log("Callback:", data);
+    setCurrentBid(data.currentBid);
+    setBids(data.highestBidder);
+  };
+
   const calculateTimeLeft = (endTime) => {
     const now = new Date().getTime(); // Current time in milliseconds
     const endTimeMs = new Date(endTime).getTime(); // Auction end time in milliseconds
     const difference = endTimeMs - now; // Remaining time in milliseconds
-    console.log("Now: ", now, "End time: ", endTimeMs, "Difference: ", difference);
+    console.log(
+      "Now: ",
+      now,
+      "End time: ",
+      endTimeMs,
+      "Difference: ",
+      difference
+    );
     return difference > 0 ? difference : 0;
-  }
+  };
+
+  
 
   useEffect(() => {
     // Fethc user id from localstorage
     const userId = useTokenStore.getState().userId;
     setUserId(userId);
-    updateBid(socket, updateBidCallback);
     const fetchAuction = async () => {
       try {
         const response = await getAuctionById(id);
         setAuction(response);
         setBids(response.highestBidder);
-        setBidAmount(response.currentBid+response.startingBid)
-        console.log(response)
+        setCurrentBid(response.currentBid);
+        setBidAmount(response.minBidIncrement + response.startingBid);
+        console.log(response);
         if (response.farmer) {
           const farmerData = await getFarmerById(response.farmer);
           setFarmer(farmerData);
@@ -114,21 +126,21 @@ export default function BiddingPage() {
     };
 
     fetchAuction();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (auction) {
-      const endTime=new Date(auction.updatedAt);
-      console.log("End time before: ",endTime);
+      const endTime = new Date(auction.updatedAt);
+      console.log("End time before: ", endTime);
       endTime.setDate(endTime.getDate() + auction.duration);
-      console.log("End time after: ",endTime);
+      console.log("End time after: ", endTime);
       setTimeLeft(calculateTimeLeft(endTime));
     }
   }, [auction]);
 
   useEffect(() => {
-    console.log(bids)
-  },[bids]);
+    updateBid(socket, updateBidCallback);
+  }, [socket]);
 
   const handleBidSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,22 +150,10 @@ export default function BiddingPage() {
       return;
     }
 
-    placeBid(socket, id, bidAmount + 100000, userId);
+    placeBid(socket, id, bidAmount, userId);
 
     // In a real app, you would send this bid to your API
-    const newBid = {
-      id: bids.length + 1,
-      vendorName: "Your Company", // In a real app, this would be the logged-in user
-      amount: bidAmount,
-      time: "Just now",
-      avatar: "/placeholder.svg?height=40&width=40",
-    };
 
-    setBids([newBid, ...bids]);
-    setProduct({
-      ...product,
-      currentBid: bidAmount,
-    });
     setBidAmount(bidAmount + product.bidIncrement);
   };
 
@@ -225,7 +225,9 @@ export default function BiddingPage() {
                       <h4 className="text-sm font-medium text-muted-foreground">
                         Quantity
                       </h4>
-                      <p>{auction?.quantity} {auction?.unit.toUpperCase()} </p>
+                      <p>
+                        {auction?.quantity} {auction?.unit.toUpperCase()}{" "}
+                      </p>
                     </div>
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">
@@ -313,7 +315,7 @@ export default function BiddingPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Current Bid</p>
                     <p className="text-3xl font-bold">
-                      ₹{auction?.currentBid.toLocaleString()}
+                      ₹{currentBid?.toLocaleString()}
                     </p>
                   </div>
                   <div className="text-right">
@@ -333,27 +335,25 @@ export default function BiddingPage() {
                   </span>
                 </div>
 
-                {auction&&timeLeft ? (
+                {auction && timeLeft ? (
                   <CountdownTimer initialTimeInMs={timeLeft} />
                 ) : (
                   <p className="text-sm text-muted-foreground">
                     Auction has ended
                   </p>
-                )
-                }
+                )}
 
                 <Progress
-                  value={(auction?.currentBid / (auction?.minBidIncrement * 2)) * 100}
+                  value={
+                    (auction?.currentBid / (auction?.minBidIncrement * 2)) * 100
+                  }
                   className="h-2"
                 />
 
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">
-                    {bids?.length} bids
-                  </span>{" "}
-                  so far. Minimum increment: ₹{auction?.minBidIncrement}
+                  <span className="font-medium">{bids?.length} bids</span> so
+                  far. Minimum increment: ₹{auction?.minBidIncrement}
                 </p>
-
               </div>
 
               <form onSubmit={handleBidSubmit} className="space-y-4">
