@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -13,12 +13,18 @@ import {
 import { Plus, Search, Filter, ArrowUpDown } from "lucide-react";
 import AuctionList from "@/app/auction-list";
 import { mockAllAuctions, mockMyAuctions } from "@/lib/mock-data";
+import useTokenStore from "@/http/store";
+import { getAuctions } from "@/http/api";
 
 export default function AuctionDashboard() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOption, setSortOption] = useState("ending-soon");
+  const role = useTokenStore((state) => state.role);
+  const [auctionList, setAuctionList] = useState([]);
+  const [filteredAllAuctions, setFilteredAllAuctions] = useState([]);
+  const [filteredMyAuctions, setFilteredMyAuctions] = useState([]);
 
   // Filter auctions based on search query and category
   // const filterAuctions = (auctions) => {
@@ -61,10 +67,13 @@ export default function AuctionDashboard() {
     createdAt: string;
   }
 
-  const filterAuctions = (auctions: Auction[]) => {
+  // let a = [];
+  const filterAuctions = (auctions) => {
+    // console.log(2, auctions)
     return auctions.filter((auction) => {
+      // console.log(69, auction)
       const matchesSearch =
-        auction.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        auction.product.toLowerCase().includes(searchQuery.toLowerCase()) ||
         auction.farmer.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory =
         categoryFilter === "all" || auction.category === categoryFilter;
@@ -72,7 +81,7 @@ export default function AuctionDashboard() {
     });
   };
 
-  const sortAuctions = (auctions: Auction[]) => {
+  const sortAuctions = (auctions) => {
     return [...auctions].sort((a, b) => {
       switch (sortOption) {
         case "ending-soon":
@@ -91,12 +100,45 @@ export default function AuctionDashboard() {
     });
   };
 
+  let count = 0;
 
 
+  useEffect(() => {
 
-  
-  const filteredAllAuctions = sortAuctions(filterAuctions(mockAllAuctions));
-  const filteredMyAuctions = sortAuctions(filterAuctions(mockMyAuctions));
+    console.log(++count, searchQuery)
+
+    if (searchQuery === "") {
+      setFilteredAllAuctions(auctionList);
+    }
+
+    if(auctionList){
+      setFilteredAllAuctions(sortAuctions(filterAuctions(auctionList)));
+      // setFilteredMyAuctions(sortAuctions(filterAuctions(auctionList)));
+      // console.log(169,filteredAllAuctions);
+    }
+
+  },[searchQuery, categoryFilter, sortOption, auctionList]);
+
+
+    useEffect(() => {
+      const fetchAuctions = async () => {
+        try {
+          const response = await getAuctions();
+          // console.log(response)
+          setAuctionList(response);
+          setFilteredAllAuctions(response);
+        } catch (error) {
+          console.error('Error fetching auctions:', error);
+        }
+      };
+      fetchAuctions();
+    },[]);
+
+// console.log(10, auctionList);
+// console.log(39,sortAuctions(filteredAllAuctions))
+  // const filteredAllAuctions = sortAuctions(filterAuctions(auctionList));
+  const filteredMyAuctions = sortAuctions(filterAuctions(auctionList));
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -163,10 +205,16 @@ export default function AuctionDashboard() {
       </div>
 
       <Tabs defaultValue="all-auctions" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="all-auctions">All Auctions</TabsTrigger>
-          <TabsTrigger value="my-auctions">My Auctions</TabsTrigger>
-        </TabsList>
+        {role === "farmer" ? (
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="all-auctions">All Auctions</TabsTrigger>
+            <TabsTrigger value="my-auctions">My Auctions</TabsTrigger>
+          </TabsList>
+        ) : (
+          <TabsList className="grid w-full grid-cols-1 mb-8">
+            <TabsTrigger value="all-auctions">All Auctions</TabsTrigger>
+          </TabsList>
+        )}
 
         <TabsContent value="all-auctions">
           {filteredAllAuctions.length > 0 ? (
