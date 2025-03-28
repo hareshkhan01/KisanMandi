@@ -28,6 +28,7 @@ export const logIn = async (data: { email: string; password: string }) => {
 export const createUser = async (data: {
   name: string;
   email: string;
+  phone: string;
   password: string;
   role: string;
 }) => {
@@ -119,7 +120,7 @@ export const getFarmerById = async (id: string) => {
 
 export const updateStatus = async (id: string) => {
   try {
-    const response = await api.put(`/api/auctions/updatestatus/${id}`,{status:"closed"});
+    const response = await api.put(`/api/auctions/updatestatus/${id}`, {"status": "closed"});
     return response.data;
   } catch (error) {
     console.error("Failed to update status:", error);

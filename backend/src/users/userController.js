@@ -8,10 +8,10 @@ const { sign, verify } = pkg;
 
 const createUser = async (req, res, next) =>{
 
-    const {name, email, password, role} = req.body
+    const {name, email, phone, password, role} = req.body
 
     
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !phone || !password || !role) {
         return next(createHttpError(400, "All fields are required"));
     }
 
@@ -36,6 +36,7 @@ const createUser = async (req, res, next) =>{
         newUser = await userModel.create({
              name, 
              email, 
+             phone,
              password: hashedPassword,
              role
             })

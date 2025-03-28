@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         enum: ["farmer", "vendor"],
         default: "user",
     },
+    phone: {
+        type: String,
+        unique: true
+    }
 },
 {
     timestamps: true,    
