@@ -10,6 +10,9 @@ const app = express();
 app.use(cors(
     {
         origin: "https://kisan-mandi.vercel.app/",
+        methods: ["GET", "POST"],
+        credentials: true,
+        // httpsOnly: true
     }
 )) 
 app.use(express.json())
