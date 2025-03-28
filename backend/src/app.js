@@ -9,7 +9,7 @@ const app = express();
 
 app.use(cors(
     {
-        origin: "*",
+        origin: "https://kisan-mandi.vercel.app/",
     }
 )) 
 app.use(express.json())
