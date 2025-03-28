@@ -1,5 +1,6 @@
 import createHttpError from "http-errors";
 import auctionModel from "../models/auction.js";
+import userModel from "../models/user.js";
 import sendSMS from "../middlewares/twilioService.js";
 async function createAuction(req, res, next) {
   const {
@@ -100,29 +101,20 @@ const getAuctionById = async (req, res, next) => {
 
 const updateAuctionStatus = async (req, res, next) => {
   try {
-    console.log("Received request to update auction status"); // Debug start
-
     const auction = await auctionModel.findById(req.params.id);
-    console.log("Auction found:", auction); // Debug check
 
     if (!auction) {
       return next(createHttpError(404, "Auction not found"));
     }
-
-    console.log("Auction before update:", auction);
     auction.status = req.body.status;
-    console.log("Auction after update:", auction);
 
     await auction.save();
-    console.log("Auction saved successfully!");
-
     console.log("Fetching farmer details...");
     const user = await userModel.findById(auction.farmer);
-    console.log("User found:", user);
 
     if (user) {
       try {
-        await sendSMS("+91" + user.phone, "Your auction has been closed");
+        await sendSMS("+91" + user.phone, "BSDK Your auction has been closed");
         console.log("SMS sent successfully!");
       } catch (error) {
         console.error("Error sending SMS:", error);

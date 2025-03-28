@@ -92,6 +92,7 @@ export default function BiddingPage() {
     const difference = endTimeMs - now; // Remaining time in milliseconds
     if (difference <= 0 && auction?.status === "open") {
       updateStatus(id);
+      auction.status = "closed";
     }
     console.log(
       "Now: ",
