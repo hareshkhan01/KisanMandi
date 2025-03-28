@@ -1,14 +1,14 @@
-import { config } from 'dotenv';
+import {config} from "../config/config.js";
 import twilio from 'twilio'
 
-const client = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
+const client = twilio(config.twilioSid, config.twilioAuthToken);
 
 const sendSMS = async (number, message) => {
     try {
         console.log("im under thw water")
         const res = await client.messages.create({
             body: message,
-            from:config.TWILIO_NUMBER,
+            from:config.twilioNumber,
             to: number
         });
         console.log("working twilio",res.sid);
